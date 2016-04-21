@@ -120,10 +120,12 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             if(uInfo!=null) {
-                //Intent mainAct = new Intent(context, LandingPageActivity.class);
-                //mainAct.putExtra("UserInfo",uInfo);
-                //startActivity(mainAct);
-                Toast.makeText(getApplicationContext(), " Login Credentials are valid !!", Toast.LENGTH_LONG).show();
+                Intent mainAct = new Intent(context, LandingPage.class);
+                mainAct.putExtra("UserInfo",uInfo);
+                mainAct.putExtra("firstName", uInfo.getFirstName());
+                mainAct.putExtra("lastName", uInfo.getLastName());
+                startActivity(mainAct);
+                //Toast.makeText(getApplicationContext(), " Login Credentials are valid !!", Toast.LENGTH_LONG).show();
             }
             else
             {
