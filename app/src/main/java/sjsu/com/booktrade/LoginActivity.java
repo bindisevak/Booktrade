@@ -25,6 +25,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toast;
+import android.app.ProgressDialog;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+
+import android.content.Intent;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +48,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements OnClickListener {
+public class LoginActivity extends AppCompatActivity  {
 
     private static final int REQUEST_READ_CONTACTS = 0;
 
@@ -55,48 +65,79 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
     //private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private EditText uEmail;
-    private EditText uPassword;
-    private View mProgressView;
-    private View mLoginFormView;
-    private Button mBtnLogin,mBtnRegister;
+//    private EditText uEmail;
+//    private EditText uPassword;
+//    private View mProgressView;
+//    private View mLoginFormView;
+//    private Button mBtnLogin,mBtnRegister;
+    @InjectView(R.id.input_email) EditText uEmail;
+    @InjectView(R.id.input_password) EditText uPassword;
+    @InjectView(R.id.btn_login) Button mBtnLogin;
+    @InjectView(R.id.link_signup) TextView mBtnRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        //setContentView(R.layout.activity_login);
         // Set up the login form.
-        uEmail = (EditText) findViewById(R.id.email);
+        setContentView(R.layout.activity_loginreg);
+        ButterKnife.inject(this);
+//        uEmail = (EditText) findViewById(R.id.email);
+//
 
+//        uPassword = (EditText) findViewById(R.id.password);
+//
+//
+//        mBtnLogin = (Button) findViewById(R.id.btn_login);
+//        mBtnRegister = (Button) findViewById(R.id.btn_register);
+//        mBtnLogin.setOnClickListener(this);
+//        mBtnRegister.setOnClickListener(this);
+//
+//        mLoginFormView = findViewById(R.id.login_form);
+//        mProgressView = findViewById(R.id.login_progress);
 
-        uPassword = (EditText) findViewById(R.id.password);
+        mBtnLogin.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+                login();
+            }
+        });
 
-        mBtnLogin = (Button) findViewById(R.id.btn_login);
-        mBtnRegister = (Button) findViewById(R.id.btn_register);
-        mBtnLogin.setOnClickListener(this);
-        mBtnRegister.setOnClickListener(this);
+        mBtnRegister.setOnClickListener(new View.OnClickListener() {
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+            @Override
+            public void onClick(View v) {
+                redirectToRegistration();
+            }
+        });
     }
 
 
+    public void login() {
+
+        String uName = uEmail.getText().toString();
+        String uPass = uPassword.getText().toString();
 
 
-    @Override
-    public void onClick(View v) {
-        if(v == mBtnLogin) {
-            String uName = uEmail.getText().toString();
-            String uPass = uPassword.getText().toString();
+        UserAction uAction = new UserAction(this);
+        uAction.execute(uName, uPass);
 
-
-            UserAction uAction = new UserAction(this);
-            uAction.execute(uName, uPass);
-        } else if (v == mBtnRegister){
-            redirectToRegistration();
-        }
     }
+
+//    @Override
+//    public void onClick(View v) {
+//        if(v == mBtnLogin) {
+//            String uName = uEmail.getText().toString();
+//            String uPass = uPassword.getText().toString();
+//
+//
+//            UserAction uAction = new UserAction(this);
+//            uAction.execute(uName, uPass);
+//        } else if (v == mBtnRegister){
+//            redirectToRegistration();
+//        }
+//    }
 
 
 
