@@ -58,7 +58,7 @@
             android:name=".LandingPage"
             android:label="@string/title_activity_landing_page"
             android:parentActivityName=".LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.Light">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="sjsu.com.booktrade.LoginActivity" />

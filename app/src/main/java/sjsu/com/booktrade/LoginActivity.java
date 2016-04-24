@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -122,6 +123,11 @@ public class LoginActivity extends AppCompatActivity  {
 
         UserAction uAction = new UserAction(this);
         uAction.execute(uName, uPass);
+//        Intent mainAct = new Intent(getApplicationContext(),LandingPage.class);
+//        mainAct.putExtra("UserInfo",uInfo);
+//        mainAct.putExtra("firstName", uInfo.getFirstName());
+//        mainAct.putExtra("lastName", uInfo.getLastName());
+//        startActivity(mainAct);
 
     }
 
@@ -154,12 +160,15 @@ public class LoginActivity extends AppCompatActivity  {
         protected String doInBackground(String... params) {
             BookTradeHttpConnection conn = new BookTradeHttpConnection();
             uInfo = conn.loginUser(params[0],params[1]);
+            Log.d("User login ","User login : Uemail" + params[0]);
             return null;
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+//            System.out.println("User login : Uemail" + uInfo.getEmailId());
+//            System.out.println("User login : Upass" + uInfo.getPassword());
             if(uInfo!=null) {
                 Intent mainAct = new Intent(context, LandingPage.class);
                 mainAct.putExtra("UserInfo",uInfo);
