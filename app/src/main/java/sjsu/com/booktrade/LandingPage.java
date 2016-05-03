@@ -1,11 +1,18 @@
 package sjsu.com.booktrade;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,21 +23,54 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import sjsu.com.booktrade.beans.BooksTO;
+import sjsu.com.booktrade.beans.UserTO;
+import sjsu.com.booktrade.util.BookTradeHttpConnection;
 
 public class LandingPage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private Location presentLocation;
+
+
+    //GPS RELATED VARS
+    private static final int INITIAL_REQUEST=1337;
+    private static final String[] INITIAL_PERMS={
+            Manifest.permission.ACCESS_FINE_LOCATION
+    };
+    private static final String[] LOCATION_PERMS={
+            Manifest.permission.ACCESS_FINE_LOCATION
+    };
+
+    ArrayList<BooksTO> bookList;
+    BooksAdapter adapter;
+    Activity activity;
+    ListView listview;
+    TextView tView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing_page);
+        listview = (ListView)findViewById(R.id.display_booksList);
+        bookList = new ArrayList<>();
+        tView=(TextView)findViewById(R.id.mallik) ;
+
 
         Intent intent = getIntent();
 
-        String fName = intent.getStringExtra("firstName");
-        String lName = intent.getStringExtra("lastName");
+        UserTO userInfo=(UserTO) intent.getSerializableExtra("UserInfo");
+        Log.d("Email",userInfo.getEmailId());
+        //String lName = intent.getStringExtra("lastName");
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
@@ -63,7 +103,104 @@ public class LandingPage extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View header=navigationView.getHeaderView(0);
+        //View myView = findViewById(R.id.nav_view);
+        TextView email=(TextView)header.findViewById(R.id.display_email);
+        email.setText(userInfo.getEmailId());
+
+        if (!canAccessLocation()) {
+
+
+            requestPermissions(INITIAL_PERMS, INITIAL_REQUEST);
+        }
+        else{
+            GPSTracker gps = new GPSTracker(LandingPage.this);
+            presentLocation = gps.getLocation();
+            if (gps.canGetLocation()) {
+                double latitude = gps.getLatitude();
+                double longitude = gps.getLongitude();
+                Log.d("Lat",latitude+"");
+                Log.d("Lang",longitude+"");
+                Toast.makeText(getApplicationContext(), "Your location is " + latitude + "Longitude is " + longitude, Toast.LENGTH_LONG).show();
+            } else {
+                gps.showSettingsAlert();
+            }
+
+        }
+
+        BooksAction bAction = new BooksAction(this);
+        bAction.execute();
     }
+
+    BooksTO bInfo;
+
+
+    private class BooksAction extends AsyncTask<String, Double, String> {
+        Context context;
+        List<BooksTO> bList = new ArrayList<BooksTO>();
+
+        private BooksAction(Context context) {
+            this.context = context;
+        }
+
+
+        @Override
+        protected String  doInBackground(String... params) {
+
+
+            BookTradeHttpConnection conn = new BookTradeHttpConnection();
+
+            bList = conn.getBooksTO();
+
+
+            Log.d("MSG", "I am before for");
+
+            return "";
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            // Adding Items to ListView
+            //if(result != null){
+            //List result = new ArrayList<BooksTO>();
+            Log.d("TAG","size>>>"+bList.size());
+            adapter = new BooksAdapter(LandingPage.this, R.layout.display_books, bList);
+            // listview=new ListView(LandingPage.this);
+            listview.setAdapter(adapter);
+            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    //BooksTO books = (BooksTO)parent.getItemAtPosition(position);
+                    String bookId = ((((TextView)view.findViewById(R.id.book_id))).getText().toString());
+                    ImageView image = (ImageView)view.findViewById(R.id.book_image);
+                    String name = (((TextView)view.findViewById(R.id.book_name))).getText().toString();
+                    String author = (((TextView)view.findViewById(R.id.book_author))).getText().toString();
+                    String price = ((((TextView)view.findViewById(R.id.book_price))).getText().toString());
+                    String pickShip = ((((TextView)view.findViewById(R.id.book_pickUpShip))).getText().toString());
+                    String edition = ((((TextView)view.findViewById(R.id.book_edition))).getText().toString());
+                    String category = ((((TextView)view.findViewById(R.id.book_category))).getText().toString());
+
+                    Intent in = new Intent(getApplicationContext(), BookDetails.class );
+                    in.putExtra("id", bookId);
+                    // in.putExtra("image", (Serializable) image);
+                    in.putExtra("name", name);
+                    in.putExtra("author",  author);
+                    in.putExtra("price", price);
+                    in.putExtra("pickShip", pickShip);
+                    in.putExtra("edition", edition);
+                    in.putExtra("category", category);
+
+
+                    startActivity(in);
+                    //Toast.makeText(getApplicationContext(), textView.getText(), Toast.LENGTH_LONG).show();
+
+                }
+            });
+        }
+    }
+
+
 
     @Override
     public void onBackPressed() {
@@ -156,8 +293,18 @@ public class LandingPage extends AppCompatActivity
 
         }
 
+
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private boolean canAccessLocation() {
+        return(hasPermission(Manifest.permission.ACCESS_FINE_LOCATION));
+    }
+
+    private boolean hasPermission(String perm) {
+        return(PackageManager.PERMISSION_GRANTED==checkSelfPermission(perm));
     }
 }

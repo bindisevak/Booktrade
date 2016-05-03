@@ -10,7 +10,14 @@ public class BooksTO {
 	private double price;
 	private String category;
 	private UserTO user;
-	
+
+	public BooksTO(int bookId, String bookName, String author, Double price) {
+	}
+
+	public BooksTO() {
+
+	}
+
 	public String getBookName() {
 		return bookName;
 	}

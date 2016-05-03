@@ -76,6 +76,11 @@
             android:name=".LandingPage"
             android:label="@string/title_activity_landing_page"
             android:parentActivityName=".LoginActivity"
+            android:theme="@style/AppTheme.Light" />
+        <activity
+            android:name=".BookDetails"
+            android:label="@string/title_activity_bookDetails"
+            android:parentActivityName=".LandingPage"
             android:theme="@style/AppTheme.Light">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

@@ -2,8 +2,14 @@ package sjsu.com.booktrade.util;
 
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import sjsu.com.booktrade.beans.BooksTO;
 import sjsu.com.booktrade.beans.UserTO;
 
 /**
@@ -38,6 +44,57 @@ public class BookTradeJSONParser {
         }
 
         return  uInfo;
+
+    }
+
+    public List<BooksTO> parseBooksInfo(String data)
+    {
+        BooksTO bInfo = null;
+        JSONObject jsonObject =null;
+        List<BooksTO> bookList=new ArrayList<BooksTO>();
+        try
+        {
+            bInfo = new BooksTO();
+            data="{Data:["+data.substring(data.indexOf("[")+1,data.length());
+            data =data.substring(0,data.lastIndexOf("]"))+"]}";
+            Log.d("Data",data);
+            jsonObject = new JSONObject(data);
+            JSONArray bookListObj = jsonObject.getJSONArray("Data");
+
+            bookList = new ArrayList<BooksTO>();
+
+            for (int i =0; i<bookListObj.length(); i++){
+
+                jsonObject=(JSONObject)bookListObj.get(i);
+                bInfo=new BooksTO();
+                bInfo.setBookName((String) jsonObject.getString("bookName"));
+                bInfo.setAuthor((String) jsonObject.getString("author"));
+                bInfo.setBookId((int) jsonObject.getInt("bookId"));
+                bInfo.setEdition((int) jsonObject.getInt("edition"));
+                bInfo.setPrice((double) jsonObject.getDouble("price"));
+                bInfo.setPickUpOrShip((String) jsonObject.getString("pickUpOrShip"));
+                bInfo.setCategory((String) jsonObject.getString("category"));
+
+
+                bookList.add(bInfo);
+                Log.d("Hi", String.valueOf(bookList));
+
+            }
+
+
+
+
+
+        }catch (Exception ex)
+        {
+            Log.d("JSON Parser Exception", ex.getStackTrace().toString());
+            ex.printStackTrace();
+            bInfo = null;
+
+        }
+
+        return  bookList;
+
 
     }
 }

@@ -8,10 +8,43 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <include
-        layout="@layout/app_bar_landing_page"
+
+
+
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:padding="@dimen/dmn_5dp">
+
+
+        <include
+            layout="@layout/app_bar_landing_page"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:weightSum="1">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:id="@+id/mallik"
+            android:text="Hello Bindi"/>
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:id="@+id/display_booksList">
+        </ListView>
+        </LinearLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
@@ -21,7 +54,6 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_landing_page"
         app:menu="@menu/activity_landing_page_drawer" />
-
 </android.support.v4.widget.DrawerLayout>
 
 

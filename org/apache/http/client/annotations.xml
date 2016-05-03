@@ -1,0 +1,6 @@
+<root>
+  <item
+      name='org.apache.http.client.HttpClient org.apache.http.HttpResponse execute(org.apache.http.client.methods.HttpUriRequest)'>
+    <annotation name='android.support.annotation.NonNull' />
+  </item>
+</root>

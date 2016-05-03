@@ -38,6 +38,7 @@
     <string name="custom_title_fname" />
     <string name="hello_world">Hello world!</string>
     <string name="imgdesc">imgdesc</string>
+    <string name="title_activity_bookDetails" />
 
     <string-array name="Planets">
         <item>Sun</item>

@@ -17,7 +17,7 @@ public class History extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        myView = inflater.inflate(R.layout.book_details, container, false);
+        myView = inflater.inflate(R.layout.book_details_nn, container, false);
         return myView;
     }
 }
