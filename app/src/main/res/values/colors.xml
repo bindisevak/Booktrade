@@ -7,7 +7,7 @@
     <color name="primary_dark">#E12929</color>
     <color name="primary_darker">#CC1D1D</color>
     <color name="accent">#FFFFFF</color>
-
+    <color name="brown">#6C460E</color>
     <color name="black">#000000</color>
     <color name="jet">#222222</color>
     <color name="oil">#333333</color>
@@ -37,4 +37,6 @@
     <color name="fbutton_color_silver">#bdc3c7</color>
     <color name="fbutton_color_concrete">#95a5a6</color>
     <color name="fbutton_color_asbestos">#7f8c8d</color>
+    <color name="brown_darker">#53350A</color>
+    <color name="brown_dark">#5F3E0C</color>
 </resources>

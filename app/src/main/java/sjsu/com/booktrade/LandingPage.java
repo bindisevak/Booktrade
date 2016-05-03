@@ -91,6 +91,12 @@ public class LandingPage extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_postAdd) {
+            PostAd fragment = new PostAd();
+            android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.content_frame, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+
             return true;
         }
 
