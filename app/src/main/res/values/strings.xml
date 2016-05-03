@@ -36,5 +36,18 @@
     <string name="custom_title_left" />
     <string name="custom_title_name" />
     <string name="custom_title_fname" />
+    <string name="hello_world">Hello world!</string>
+    <string name="imgdesc">imgdesc</string>
 
+    <string-array name="Planets">
+        <item>Sun</item>
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
 </resources>
