@@ -1,45 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
 
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
+    android:gravity="center_horizontal|center_vertical"
+    android:orientation="vertical">
 
     <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Your Cards"
-        android:id="@+id/textView"
-        android:layout_below="@+id/expandableListView"
-        android:layout_alignRight="@+id/button"
-        android:layout_alignEnd="@+id/button" />
+        android:gravity="center_vertical"
+        android:text="Name (optional):"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="262dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="center_vertical"
+        android:inputType="textPersonName" >
 
+        <requestFocus />
+    </EditText>
 
-    <Button
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="Age:"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <EditText
+            android:id="@+id/editText2"
+            android:layout_width="79dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="center_vertical"
+            android:inputType="number" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text="Amount to donate:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <!--<Spinner-->
+        <!--android:id="@+id/spinner1"-->
+        <!--android:layout_width="276dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:entries="@array/donations"-->
+        <!--android:gravity="center_vertical" />-->
+
+    <fr.ganfra.materialspinner.MaterialSpinner
+        android:id="@+id/spinner"
+        android:layout_width="276dp"
+        android:layout_height="wrap_content"
+        app:ms_multiline="false"
+        app:ms_hint="hint"
+        app:ms_enableFloatingLabel="false"
+        app:ms_enableErrorLabel="false"
+        app:ms_floatingLabelText="floating label"
+        app:ms_baseColor="@color/base"
+        app:ms_highlightColor="@color/highlight"
+        app:ms_errorColor="@color/error"
+        app:ms_typeface="typeface.ttf"
+        app:ms_thickness="2dp"
+        app:ms_hintColor="@color/hint"
+        app:ms_arrowColor="@color/arrow"
+        app:ms_arrowSize="16dp"
+        app:ms_alignLabels="false"
+        app:ms_floatingLabelColor="@color/floating_label"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="141dp"
+        android:gravity="center"
+        android:orientation="vertical" >
+    <info.hoang8f.widget.FButton
+        android:id="@+id/BuyCredits"
+        android:layout_width="180dp"
+        android:layout_height="49dp"
         android:text="Buy Credits"
-        android:id="@+id/button"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        fbutton:buttonColor="@color/fbutton_color_green_sea"
+        fbutton:shadowColor="@color/fbutton_color_asbestos"
+        fbutton:shadowEnabled="true"
+        fbutton:shadowHeight="5dp"
+        fbutton:cornerRadius="5dp"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Payment"
-        android:id="@+id/button2"
-        android:layout_marginTop="53dp"
-        android:layout_below="@+id/button"
-        android:layout_alignRight="@+id/button"
-        android:layout_alignEnd="@+id/button" />
+        <!--<Button-->
+            <!--android:id="@+id/button1"-->
+            <!--android:layout_width="180dp"-->
+            <!--android:layout_height="49dp"-->
+            <!--android:text="Donate"-->
+            <!--android:textColor="#000000" />-->
 
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/listView"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/button" />
+    </LinearLayout>
 
-
-</RelativeLayout>
+</LinearLayout>
