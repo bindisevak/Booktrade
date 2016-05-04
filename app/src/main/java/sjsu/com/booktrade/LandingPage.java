@@ -61,9 +61,9 @@ public class LandingPage extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing_page);
-        listview = (ListView)findViewById(R.id.display_booksList);
-        bookList = new ArrayList<>();
-        tView=(TextView)findViewById(R.id.mallik) ;
+//        listview = (ListView)findViewById(R.id.display_booksList);
+//        bookList = new ArrayList<>();
+
 
 
         Intent intent = getIntent();
@@ -86,14 +86,14 @@ public class LandingPage extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -105,100 +105,19 @@ public class LandingPage extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         View header=navigationView.getHeaderView(0);
         //View myView = findViewById(R.id.nav_view);
-        TextView email=(TextView)header.findViewById(R.id.display_email);
-        email.setText(userInfo.getEmailId());
 
-        if (!canAccessLocation()) {
+        Home fragment = new Home();
+        android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.content_frame, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
 
-
-            requestPermissions(INITIAL_PERMS, INITIAL_REQUEST);
-        }
-        else{
-            GPSTracker gps = new GPSTracker(LandingPage.this);
-            presentLocation = gps.getLocation();
-            if (gps.canGetLocation()) {
-                double latitude = gps.getLatitude();
-                double longitude = gps.getLongitude();
-                Log.d("Lat",latitude+"");
-                Log.d("Lang",longitude+"");
-                Toast.makeText(getApplicationContext(), "Your location is " + latitude + "Longitude is " + longitude, Toast.LENGTH_LONG).show();
-            } else {
-                gps.showSettingsAlert();
-            }
-
-        }
-
-        BooksAction bAction = new BooksAction(this);
-        bAction.execute();
     }
 
     BooksTO bInfo;
 
 
-    private class BooksAction extends AsyncTask<String, Double, String> {
-        Context context;
-        List<BooksTO> bList = new ArrayList<BooksTO>();
 
-        private BooksAction(Context context) {
-            this.context = context;
-        }
-
-
-        @Override
-        protected String  doInBackground(String... params) {
-
-
-            BookTradeHttpConnection conn = new BookTradeHttpConnection();
-
-            bList = conn.getBooksTO();
-
-
-            Log.d("MSG", "I am before for");
-
-            return "";
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            // Adding Items to ListView
-            //if(result != null){
-            //List result = new ArrayList<BooksTO>();
-            Log.d("TAG","size>>>"+bList.size());
-            adapter = new BooksAdapter(LandingPage.this, R.layout.display_books, bList);
-            // listview=new ListView(LandingPage.this);
-            listview.setAdapter(adapter);
-            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    //BooksTO books = (BooksTO)parent.getItemAtPosition(position);
-                    String bookId = ((((TextView)view.findViewById(R.id.book_id))).getText().toString());
-                    ImageView image = (ImageView)view.findViewById(R.id.book_image);
-                    String name = (((TextView)view.findViewById(R.id.book_name))).getText().toString();
-                    String author = (((TextView)view.findViewById(R.id.book_author))).getText().toString();
-                    String price = ((((TextView)view.findViewById(R.id.book_price))).getText().toString());
-                    String pickShip = ((((TextView)view.findViewById(R.id.book_pickUpShip))).getText().toString());
-                    String edition = ((((TextView)view.findViewById(R.id.book_edition))).getText().toString());
-                    String category = ((((TextView)view.findViewById(R.id.book_category))).getText().toString());
-
-                    Intent in = new Intent(getApplicationContext(), BookDetails.class );
-                    in.putExtra("id", bookId);
-                    // in.putExtra("image", (Serializable) image);
-                    in.putExtra("name", name);
-                    in.putExtra("author",  author);
-                    in.putExtra("price", price);
-                    in.putExtra("pickShip", pickShip);
-                    in.putExtra("edition", edition);
-                    in.putExtra("category", category);
-
-
-                    startActivity(in);
-                    //Toast.makeText(getApplicationContext(), textView.getText(), Toast.LENGTH_LONG).show();
-
-                }
-            });
-        }
-    }
 
 
 

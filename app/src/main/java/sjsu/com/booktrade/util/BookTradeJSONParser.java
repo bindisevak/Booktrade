@@ -74,6 +74,7 @@ public class BookTradeJSONParser {
                 bInfo.setPrice((double) jsonObject.getDouble("price"));
                 bInfo.setPickUpOrShip((String) jsonObject.getString("pickUpOrShip"));
                 bInfo.setCategory((String) jsonObject.getString("category"));
+                bInfo.setImageURLSmall((String) jsonObject.getString("imageURLSmall"));
 
 
                 bookList.add(bInfo);
