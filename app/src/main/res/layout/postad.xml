@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,12 +8,13 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="sjsu.com.booktrade.LoginActivity">
+    tools:context="sjsu.com.booktrade.LoginActivity"
+    android:id="@+id/postadid">
 
 
 
     <ScrollView
-        android:id="@+id/login_form"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -25,11 +26,6 @@
 
 
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-
                 <EditText
                     android:id="@+id/isbn"
                     android:layout_width="match_parent"
@@ -39,9 +35,9 @@
                     android:maxLines="1"
                     android:singleLine="true"
                     android:maxLength="13"
+                    android:gravity="center"
                     />
 
-            </android.support.design.widget.TextInputLayout>
 
             <Button
                 android:id="@+id/btn_isbnLookup"
@@ -88,4 +84,4 @@
 
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+</FrameLayout>

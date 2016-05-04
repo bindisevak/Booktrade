@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +29,7 @@ public class PostAd extends Fragment {
     @InjectView(R.id.btn_scan) Button btnScan;
     @InjectView(R.id.note) TextView note;
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -43,12 +47,19 @@ public class PostAd extends Fragment {
         btnIsbnLookup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startnew activity
+                PostAdPage2 fragment2 = new PostAdPage2();
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.content_frame,fragment2);
+                fragmentTransaction.addToBackStack(null);
+                Log.d("","main yahaan hoon");
+                fragmentTransaction.commit();
             }
         });
         return myView;
 
     }
+
 
     private void startBarcodeScanner(){
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");

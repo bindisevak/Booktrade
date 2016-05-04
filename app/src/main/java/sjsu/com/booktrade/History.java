@@ -32,22 +32,22 @@ import butterknife.InjectView;
 public class History extends Fragment {
 
     View myView;
-    @InjectView(R.id.image_small) ImageView image;
+    //@InjectView(R.id.image_small) ImageView image;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = inflater.inflate( R.layout.book_details, container, false );
-        int SDK_INT = android.os.Build.VERSION.SDK_INT;
-        try {
-            ImageView i = (ImageView) myView.findViewById(R.id.image_small);
-            Bitmap bitmap = BitmapFactory.decodeStream((InputStream)new URL("http://image10.bizrate-images.com/resize?sq=60&uid=2216744464").getContent());
-            i.setImageBitmap(bitmap);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        //int SDK_INT = android.os.Build.VERSION.SDK_INT;
+//        try {
+////            //ImageView i = (ImageView) myView.findViewById(R.);
+////            Bitmap bitmap = BitmapFactory.decodeStream((InputStream)new URL("http://image10.bizrate-images.com/resize?sq=60&uid=2216744464").getContent());
+////            i.setImageBitmap(bitmap);
+//        } catch (MalformedURLException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 //        JSONObject obj = new JSONObject();
 //
 //
@@ -60,6 +60,7 @@ public class History extends Fragment {
 //            } catch (JSONException e) {
 //                e.printStackTrace();
 //            }
+        myView = inflater.inflate(R.layout.book_details_nn, container, false);
         return myView;
     }
 

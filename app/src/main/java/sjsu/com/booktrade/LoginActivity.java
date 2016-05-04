@@ -1,57 +1,31 @@
 package sjsu.com.booktrade;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
+import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
-import android.content.ContentResolver;
-import android.database.Cursor;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toast;
-import android.app.ProgressDialog;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-
-import android.content.Intent;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import sjsu.com.booktrade.beans.UserTO;
 import sjsu.com.booktrade.util.BookTradeHttpConnection;
-import sjsu.com.booktrade.util.BookTradeJSONParser;
-
-import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity  {
+public class LoginActivity extends AppCompatActivity {
 
     private static final int REQUEST_READ_CONTACTS = 0;
+    private Location presentLocation;
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -75,6 +49,7 @@ public class LoginActivity extends AppCompatActivity  {
     @InjectView(R.id.input_password) EditText uPassword;
     @InjectView(R.id.btn_login) Button mBtnLogin;
     @InjectView(R.id.link_signup) TextView mBtnRegister;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +77,8 @@ public class LoginActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 login();
+
+
             }
         });
 
@@ -123,29 +100,8 @@ public class LoginActivity extends AppCompatActivity  {
 
         UserAction uAction = new UserAction(this);
         uAction.execute(uName, uPass);
-//        Intent mainAct = new Intent(getApplicationContext(),LandingPage.class);
-//        mainAct.putExtra("UserInfo",uInfo);
-//        mainAct.putExtra("firstName", uInfo.getFirstName());
-//        mainAct.putExtra("lastName", uInfo.getLastName());
-//        startActivity(mainAct);
 
     }
-
-//    @Override
-//    public void onClick(View v) {
-//        if(v == mBtnLogin) {
-//            String uName = uEmail.getText().toString();
-//            String uPass = uPassword.getText().toString();
-//
-//
-//            UserAction uAction = new UserAction(this);
-//            uAction.execute(uName, uPass);
-//        } else if (v == mBtnRegister){
-//            redirectToRegistration();
-//        }
-//    }
-
-
 
 
     UserTO uInfo;
@@ -172,9 +128,11 @@ public class LoginActivity extends AppCompatActivity  {
             if(uInfo!=null) {
                 Intent mainAct = new Intent(context, LandingPage.class);
                 mainAct.putExtra("UserInfo",uInfo);
+                Log.d("String", "I am here");
                 mainAct.putExtra("firstName", uInfo.getFirstName());
                 mainAct.putExtra("lastName", uInfo.getLastName());
                 startActivity(mainAct);
+
                 //Toast.makeText(getApplicationContext(), " Login Credentials are valid !!", Toast.LENGTH_LONG).show();
             }
             else
@@ -194,22 +152,6 @@ public class LoginActivity extends AppCompatActivity  {
 
     }
 
-    /*private void startBarcodeScanner(){
-        IntentIntegrator integrator = new IntentIntegrator(this);
-        integrator.initiateScan();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
-        IntentResult intentScanningResult = IntentIntegrator.parseActivityResult(requestCode,resultCode,intent);
-        if(intentScanningResult != null){
-            String scanContent = intentScanningResult.getContents();
-            String scanFormat = intentScanningResult.getFormatName();
-            Toast.makeText(this, "Format: "+scanFormat + "Result: "+ scanFormat, Toast.LENGTH_LONG).show();
-        }
-
-    }*/
 
 
 }
