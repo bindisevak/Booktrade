@@ -1,5 +1,7 @@
 package sjsu.com.booktrade;
 
+import android.os.AsyncTask;
+import android.os.StrictMode;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -61,6 +63,10 @@ public class LandingPage extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing_page);
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
 //        listview = (ListView)findViewById(R.id.display_booksList);
 //        bookList = new ArrayList<>();
 
@@ -86,6 +92,19 @@ public class LandingPage extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                PostAd fragment = new PostAd();
+                android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.content_frame, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -218,6 +237,7 @@ public class LandingPage extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
     private boolean canAccessLocation() {
         return(hasPermission(Manifest.permission.ACCESS_FINE_LOCATION));

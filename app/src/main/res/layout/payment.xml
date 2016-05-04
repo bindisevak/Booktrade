@@ -5,57 +5,76 @@
     android:layout_height="fill_parent"
     xmlns:fbutton="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/tools"
-    android:gravity="center_horizontal|center_vertical"
+    android:gravity="center_horizontal"
     android:orientation="vertical">
-
     <TextView
-        android:id="@+id/textView1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:text="Name (optional):"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_height="30dp"
+        android:text="Payment Page"
+        android:layout_gravity="center"
+        android:textSize="20dp"
+        android:layout_marginTop="50dp"
+        android:textColor="@color/brown"
+        android:layout_marginBottom="70dp"/>
 
-    <EditText
-        android:id="@+id/editText1"
-        android:layout_width="262dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:gravity="center_vertical"
-        android:inputType="textPersonName" >
-
-        <requestFocus />
-    </EditText>
-
-    <LinearLayout
+    <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:gravity="center"
-        android:orientation="vertical" >
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:stretchColumns="1"
+        android:layout_marginBottom="20dp">
+        <TableRow
+            android:id="@+id/credit_current"
+            android:layout_width="fill_parent"
+            android:weightSum="8"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:text="Age:"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            <TextView
+                android:id="@+id/credit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textSize="20dp"
+                android:text="Credits in your Account:"
+                android:layout_gravity="left"
+                android:textStyle="bold"
+                android:shadowRadius="2"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                />
 
-        <EditText
-            android:id="@+id/editText2"
-            android:layout_width="79dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:gravity="center_vertical"
-            android:inputType="number" />
-    </LinearLayout>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:inputType="number"
+                      android:id="@+id/current_credits"
+                      android:layout_weight="6"
+                      android:layout_gravity="center"
+                      android:textSize="20dp"
+                      android:minLines="1"
+                      android:maxLines="2"
+                      android:textStyle="bold"
+                      android:shadowRadius="2"
+                      android:shadowDx="1"
+                      android:shadowDy="1"/>
+
+        </TableRow>
+    </TableLayout>
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:text="Amount to donate:"
+        android:text="Select number of Credits to purchase"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    <TextView
+        android:id="@+id/credit_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text="2$ = 1Credits"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <!--<Spinner-->
@@ -90,16 +109,15 @@
         android:layout_height="141dp"
         android:gravity="center"
         android:orientation="vertical" >
-    <info.hoang8f.widget.FButton
-        android:id="@+id/BuyCredits"
-        android:layout_width="180dp"
-        android:layout_height="49dp"
-        android:text="Buy Credits"
-        fbutton:buttonColor="@color/fbutton_color_green_sea"
-        fbutton:shadowColor="@color/fbutton_color_asbestos"
-        fbutton:shadowEnabled="true"
-        fbutton:shadowHeight="5dp"
-        fbutton:cornerRadius="5dp"/>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/BuyCredits"
+            android:layout_width="180dp"
+            android:layout_height="49dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:padding="12dp"
+            android:text="Buy Credits"/>
 
         <!--<Button-->
             <!--android:id="@+id/button1"-->
