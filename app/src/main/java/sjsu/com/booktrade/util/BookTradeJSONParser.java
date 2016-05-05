@@ -9,7 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import sjsu.com.booktrade.beans.AddressTO;
+import sjsu.com.booktrade.beans.AddressType;
 import sjsu.com.booktrade.beans.BooksTO;
+import sjsu.com.booktrade.beans.SchedulesTO;
 import sjsu.com.booktrade.beans.UserTO;
 
 /**
@@ -68,16 +71,48 @@ public class BookTradeJSONParser {
 
                 jsonObject=(JSONObject)bookListObj.get(i);
                 bInfo=new BooksTO();
-                bInfo.setBookName((String) jsonObject.getString("bookName"));
-                bInfo.setAuthor((String) jsonObject.getString("author"));
-                bInfo.setBookId((int) jsonObject.getInt("bookId"));
-                bInfo.setEdition((int) jsonObject.getInt("edition"));
-                bInfo.setPrice((double) jsonObject.getDouble("price"));
-                bInfo.setPickUpOrShip((String) jsonObject.getString("pickUpOrShip"));
-                bInfo.setCategory((String) jsonObject.getString("category"));
-                bInfo.setImageURLSmall((String) jsonObject.getString("imageURLSmall"));
+                String user = null;
+                String address = null;
+                String schedules = null;
+                if(jsonObject.getString("user") != null && jsonObject.getString("user").length()>0){
+                    user = jsonObject.getString("user");
+                }
+                if(jsonObject.getString("address") != null && jsonObject.getString("address").length()>0) {
+                    address = jsonObject.getString("address");
+                }
+                if(jsonObject.getString("schedules") != null && jsonObject.getString("schedules").length()>0)
+                {
+                    schedules = jsonObject.getString("schedules");
+                }
 
-
+                if (jsonObject.has("bookId") && jsonObject.get("bookId") != null)
+                    bInfo.setBookId((Integer) jsonObject.get("bookId"));
+                if (jsonObject.has("bookName") && jsonObject.get("bookName") != null)
+                    bInfo.setBookName((String) jsonObject.get("bookName"));
+                if (jsonObject.has("author") && jsonObject.get("author") != null)
+                    bInfo.setAuthor((String) jsonObject.get("author"));
+                if (jsonObject.has("edition") && jsonObject.get("edition") != null)
+                    bInfo.setEdition((Integer) jsonObject.get("edition"));
+                if (jsonObject.has("pickUpOrShip") && jsonObject.get("pickUpOrShip") != null) {
+                    bInfo.setPickUpOrShip((String) jsonObject.getString("pickUpOrShip"));
+                }
+                if (jsonObject.has("price") && jsonObject.get("price") != null)
+                    bInfo.setPrice((Double) jsonObject.get("price"));
+                if (user != null && user.length() > 0 && user != "null")
+                    bInfo.setUser(parseUserInfo(user));
+                if (address != null && address.length() > 0 && address != "null")
+                    bInfo.setAddress(parseAddressInfo(address));
+               // if (jsonObject.has("imageURLSmall") && jsonObject.getString("imageURLSmall") != "null")
+                    bInfo.setImageURLSmall((String) jsonObject.getString("imageURLSmall"));
+              //  if (jsonObject.has("imageURLLarge") && jsonObject.getString("imageURLLarge") != "null")
+                    bInfo.setImageURLLarge((String) jsonObject.getString("imageURLLarge"));
+                if (schedules != null && schedules.length() > 0 && schedules != "null")
+                    bInfo.setSchedules(parseSchedulesInfo(schedules));
+                if (jsonObject.has("transactionComplete") && jsonObject.get("transactionComplete") != null)
+                    bInfo.setTransactionComplete((boolean) jsonObject.get("transactionComplete"));
+                if (jsonObject.has("category") && jsonObject.get("category") != null && jsonObject.getString("category") !=  "null") {
+                    bInfo.setCategory((String) jsonObject.get("category"));
+                }
                 bookList.add(bInfo);
                 Log.d("Hi", String.valueOf(bookList));
 
@@ -98,5 +133,128 @@ public class BookTradeJSONParser {
         return  bookList;
 
 
+    }
+
+    public BooksTO parseBookInfo(String bInfo) {
+        BooksTO book = null;
+        JSONObject jsonObject = null;
+        try {
+            book = new BooksTO();
+            jsonObject = new JSONObject(bInfo);
+
+            String user = null;
+            String address = null;
+            String schedules = null;
+
+            if(jsonObject.getString("user") != null && jsonObject.getString("user").length()>0){
+                user = jsonObject.getString("user");
+            }
+            if(jsonObject.getString("address") != null && jsonObject.getString("address").length()>0) {
+                address = jsonObject.getString("address");
+            }
+            if(jsonObject.getString("schedules") != null && jsonObject.getString("schedules").length()>0)
+            {
+                schedules = jsonObject.getString("schedules");
+            }
+
+            if (jsonObject.has("bookId") && jsonObject.get("bookId") != null)
+                book.setBookId((Integer) jsonObject.get("bookId"));
+            if (jsonObject.has("bookName") && jsonObject.get("bookName") != null)
+                book.setBookName((String) jsonObject.get("bookName"));
+            if (jsonObject.has("author") && jsonObject.get("author") != null)
+                book.setAuthor((String) jsonObject.get("author"));
+            if (jsonObject.has("edition") && jsonObject.get("edition") != null)
+                book.setEdition((Integer) jsonObject.get("edition"));
+            if (jsonObject.has("pickUpOrShip") && jsonObject.get("pickUpOrShip") != null) {
+                book.setPickUpOrShip((String) jsonObject.getString("pickUpOrShip"));
+            }
+            if (jsonObject.has("price") && jsonObject.get("price") != null)
+                book.setPrice((Double) jsonObject.get("price"));
+            if (jsonObject.has("category") && jsonObject.get("category") != null)
+                book.setCategory((String) jsonObject.get("category"));
+            if (user != null && user.length() > 0 && user != "null")
+                book.setUser(parseUserInfo(user));
+            if (address != null && address.length() > 0 && address != "null")
+                book.setAddress(parseAddressInfo(address));
+            if (jsonObject.has("imageURLSmall") && jsonObject.get("imageURLSmall") != null)
+                book.setImageURLSmall((String) jsonObject.get("imageURLSmall"));
+            if (jsonObject.has("imageURLLarge") && jsonObject.get("imageURLLarge") != null)
+                book.setImageURLLarge((String) jsonObject.get("imageURLLarge"));
+            if (schedules != null && schedules.length() > 0 && schedules != "null")
+                book.setSchedules(parseSchedulesInfo(schedules));
+            if (jsonObject.has("transactionComplete") && jsonObject.get("transactionComplete") != null)
+                book.setTransactionComplete((boolean) jsonObject.get("transactionComplete"));
+
+        } catch (Exception ex) {
+            Log.d("JSON Parser Exception", ex.getStackTrace().toString());
+            ex.printStackTrace();
+            //bInfo = null;
+        }
+
+        return book;
+    }
+
+    private AddressTO parseAddressInfo(String addressStr) {
+        AddressTO address = null;
+        JSONObject jsonObject = null;
+        try {
+            address = new AddressTO();
+            jsonObject = new JSONObject(addressStr);
+
+            address.setAddressId((int) jsonObject.get("addressId"));
+            address.setAddressline1((String) jsonObject.get("addressline1"));
+            address.setAddressline2((String) jsonObject.get("addressline2"));
+            if(((String) jsonObject.get("addressline2")).equalsIgnoreCase("pickUp")) {
+                address.setAddresstype(AddressType.PICKUP);
+            }else{
+                address.setAddresstype(AddressType.SHIPPING);
+            }
+            address.setCity((String) jsonObject.get("city"));
+            address.setPincode((String) jsonObject.get("pincode"));
+            address.setState((String) jsonObject.get("state"));
+            address.setUserId((int) jsonObject.get("userId"));
+            address.setLatitude((double) jsonObject.get("latitude"));
+            address.setLongitude((double) jsonObject.get("longitude"));
+            address.setBookId((int) jsonObject.get("bookId"));
+
+
+        } catch (Exception ex) {
+            Log.d("JSON Parser Exception", ex.getStackTrace().toString());
+            ex.printStackTrace();
+            // address = null;
+
+        }
+        return address;
+    }
+
+
+    private SchedulesTO parseSchedulesInfo(String schedules) {
+        SchedulesTO schedulesTO = new SchedulesTO();
+        JSONObject jsonObject = null;
+        try {
+            schedulesTO = new SchedulesTO();
+            jsonObject = new JSONObject(schedules);
+
+            schedulesTO.setScheduleId((int) jsonObject.get("scheduleId"));
+            schedulesTO.setBookId((int) jsonObject.get("bookId"));
+            schedulesTO.setBuyerId((int) jsonObject.get("buyerId"));
+            schedulesTO.setSellerId((int) jsonObject.get("sellerId"));
+            if(jsonObject.getString("dayFrom") != null && jsonObject.getString("dayFrom") != "null")
+                schedulesTO.setDayFrom((String) jsonObject.get("dayFrom"));
+            if(jsonObject.getString("dayTo") != null && jsonObject.getString("dayTo") != "null")
+            schedulesTO.setDayTo((String) jsonObject.get("dayTo"));
+            if(jsonObject.getString("timeFrom") != null && jsonObject.getString("timeFrom") != "null")
+            schedulesTO.setTimeFrom((String) jsonObject.get("timeFrom"));
+            if(jsonObject.getString("timeTo") != null && jsonObject.getString("timeTo") != "null")
+            schedulesTO.setTimeTo((String) jsonObject.get("timeTo"));
+
+
+        } catch (Exception ex) {
+            Log.d("JSON Parser Exception", ex.getStackTrace().toString());
+            ex.printStackTrace();
+            //schedules = null;
+
+        }
+        return schedulesTO;
     }
 }

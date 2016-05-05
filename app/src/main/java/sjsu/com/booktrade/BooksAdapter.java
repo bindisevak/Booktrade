@@ -56,6 +56,8 @@ public class BooksAdapter extends BaseAdapter implements Filterable {
         TextView edition;
         TextView shippingInfo;
         ImageView image;
+        TextView book_userId;
+        TextView userContact;
     }
 
     @Override
@@ -81,6 +83,8 @@ public class BooksAdapter extends BaseAdapter implements Filterable {
             holder.edition = (TextView) view.findViewById(R.id.book_edition);
             holder.shippingInfo = (TextView) view.findViewById(R.id.book_pickUpShip);
             holder.image = (ImageView) view.findViewById(R.id.book_image);
+            holder.book_userId = (TextView)view.findViewById(R.id.book_userId);
+            holder.userContact = (TextView)view.findViewById(R.id.book_userContact);
             view.setTag(holder);
         }
         else {
@@ -95,7 +99,12 @@ public class BooksAdapter extends BaseAdapter implements Filterable {
         holder.category.setText(books.getCategory());
         holder.edition.setText(books.getEdition()+"");
         holder.shippingInfo.setText(books.getPickUpOrShip());
+        Log.d("UserId:: ",""+books.getUser().getUserId());
+        holder.book_userId.setText(books.getUser().getUserId()+"");
+        holder.userContact.setText(books.getUser().getContactNumber()+"");
+        Log.d("BookName",books.getBookName());
         holder.image.setImageURI(Uri.parse(books.getImageURLSmall()));
+
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
         try {
             Bitmap bitmap;

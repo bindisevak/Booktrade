@@ -132,8 +132,8 @@ public class Home extends Fragment {
             GPSTracker gps = new GPSTracker(getContext());
             presentLocation = gps.getLocation();
             if (gps.canGetLocation()) {
-                double latitude = gps.getLatitude();
-                double longitude = gps.getLongitude();
+                double latitude = 37.3551720;
+                double longitude = -121.8917830;
                 Log.d("Lat",latitude+"");
                 Log.d("Lang",longitude+"");
                 Toast.makeText(getContext(), "Your location is " + latitude + "Longitude is " + longitude, Toast.LENGTH_LONG).show();
@@ -228,6 +228,8 @@ public class Home extends Fragment {
                     String pickShip = ((((TextView)view.findViewById(R.id.book_pickUpShip))).getText().toString());
                     String edition = ((((TextView)view.findViewById(R.id.book_edition))).getText().toString());
                     String category = ((((TextView)view.findViewById(R.id.book_category))).getText().toString());
+                    String sellerId = ((TextView)view.findViewById(R.id.book_userId)).getText().toString();
+                    String contactNumber = ((TextView)view.findViewById(R.id.book_userContact)).getText().toString();
 
                     Intent in = new Intent(getContext(), BookDetails.class );
                     in.putExtra("id", bookId);
@@ -238,6 +240,14 @@ public class Home extends Fragment {
                     in.putExtra("pickShip", pickShip);
                     in.putExtra("edition", edition);
                     in.putExtra("category", category);
+                    in.putExtra("sellerId", sellerId);
+                    in.putExtra("contactNumber", contactNumber);
+
+                    Intent intent = getActivity().getIntent();
+                    UserTO userInfo=(UserTO) intent.getSerializableExtra("UserInfo");
+                    int userId = userInfo.getUserId();
+                    in.putExtra("userId", userId);
+                    in.putExtra("UserInfo", userInfo);
                     image.buildDrawingCache();
                     Bitmap image1= image.getDrawingCache();
 
@@ -298,6 +308,8 @@ public class Home extends Fragment {
                     String pickShip = ((((TextView) view.findViewById(R.id.book_pickUpShip))).getText().toString());
                     String edition = ((((TextView) view.findViewById(R.id.book_edition))).getText().toString());
                     String category = ((((TextView) view.findViewById(R.id.book_category))).getText().toString());
+                    String sellerId = ((TextView)view.findViewById(R.id.book_userId)).getText().toString();
+                    String contactNumber = ((TextView)view.findViewById(R.id.book_userContact)).getText().toString();
 
                     Intent in = new Intent(getContext(), BookDetails.class);
                     in.putExtra("id", bookId);
@@ -308,7 +320,12 @@ public class Home extends Fragment {
                     in.putExtra("pickShip", pickShip);
                     in.putExtra("edition", edition);
                     in.putExtra("category", category);
-
+                    in.putExtra("sellerId", sellerId);
+                    in.putExtra("contactNumber", contactNumber);
+                    Intent intent = getActivity().getIntent();
+                    UserTO userInfo=(UserTO) intent.getSerializableExtra("UserInfo");
+                    String userId = String.valueOf(userInfo.getUserId());
+                    in.putExtra("userId", userId);
 
                     startActivity(in);
 

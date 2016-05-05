@@ -1,3 +1,4 @@
+
 package sjsu.com.booktrade;
 
 import android.app.SearchManager;
@@ -47,11 +48,11 @@ public class LandingPage extends AppCompatActivity
 
 
     //GPS RELATED VARS
-    private static final int INITIAL_REQUEST=1337;
-    private static final String[] INITIAL_PERMS={
+    private static final int INITIAL_REQUEST = 1337;
+    private static final String[] INITIAL_PERMS = {
             Manifest.permission.ACCESS_FINE_LOCATION
     };
-    private static final String[] LOCATION_PERMS={
+    private static final String[] LOCATION_PERMS = {
             Manifest.permission.ACCESS_FINE_LOCATION
     };
 
@@ -73,11 +74,10 @@ public class LandingPage extends AppCompatActivity
 //        bookList = new ArrayList<>();
 
 
-
         Intent intent = getIntent();
 
-        UserTO userInfo=(UserTO) intent.getSerializableExtra("UserInfo");
-        Log.d("Email",userInfo.getEmailId());
+        UserTO userInfo = (UserTO) intent.getSerializableExtra("UserInfo");
+        //Log.d("Email", userInfo.getEmailId());
         //String lName = intent.getStringExtra("lastName");
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -88,7 +88,6 @@ public class LandingPage extends AppCompatActivity
         ab.setDisplayHomeAsUpEnabled(false);
         ab.setDisplayShowCustomEnabled(true); // enable overriding the default toolbar layout
         ab.setDisplayShowTitleEnabled(false); // disable the default
-
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -129,12 +128,14 @@ public class LandingPage extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        View header=navigationView.getHeaderView(0);
+        View header = navigationView.getHeaderView(0);
         //View myView = findViewById(R.id.nav_view);
         TextView email = (TextView) header.findViewById(R.id.display_email);
         TextView name = (TextView) header.findViewById(R.id.display_name);
-        email.setText(userInfo.getEmailId());
-        name.setText(userInfo.getFirstName());
+        if(userInfo != null) {
+            email.setText(userInfo.getEmailId());
+            name.setText(userInfo.getFirstName());
+        }
 
         Home fragment = new Home();
         android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -145,10 +146,6 @@ public class LandingPage extends AppCompatActivity
     }
 
     BooksTO bInfo;
-
-
-
-
 
 
     @Override
@@ -181,12 +178,13 @@ public class LandingPage extends AppCompatActivity
             android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.content_frame, fragment);
             transaction.addToBackStack(null);
+            Bundle bundle = new Bundle();
+            bundle.putInt("userId", getIntent().getIntExtra("userId", 0));
+            fragment.setArguments(bundle);
             transaction.commit();
 
             return true;
-        }
-
-        else if (id == R.id.action_logout) {
+        } else if (id == R.id.action_logout) {
             return true;
         }
 
@@ -243,7 +241,6 @@ public class LandingPage extends AppCompatActivity
         }
 
 
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -251,10 +248,10 @@ public class LandingPage extends AppCompatActivity
 
 
     private boolean canAccessLocation() {
-        return(hasPermission(Manifest.permission.ACCESS_FINE_LOCATION));
+        return (hasPermission(Manifest.permission.ACCESS_FINE_LOCATION));
     }
 
     private boolean hasPermission(String perm) {
-        return(PackageManager.PERMISSION_GRANTED==checkSelfPermission(perm));
+        return (PackageManager.PERMISSION_GRANTED == checkSelfPermission(perm));
     }
 }

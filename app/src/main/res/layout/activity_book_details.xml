@@ -484,6 +484,18 @@
             android:id="@+id/book_idDetails"
             android:visibility="invisible"/>
 
+            <TextView
+                android:layout_width="2dp"
+                android:layout_height="2dp"
+                android:id="@+id/book_userIdMain"
+                android:visibility="invisible"/>
+
+            <TextView
+                android:layout_width="2dp"
+                android:layout_height="2dp"
+                android:id="@+id/book_userContactMain"
+                android:visibility="invisible"/>
+
         </LinearLayout>
     </ScrollView>
 

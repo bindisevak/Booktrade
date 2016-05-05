@@ -95,5 +95,11 @@
              android:id="@+id/book_userId"
              android:visibility="invisible"/>
 
+            <TextView
+                android:layout_width="2dp"
+                android:layout_height="2dp"
+                android:id="@+id/book_userContact"
+                android:visibility="invisible"/>
+
     </LinearLayout>
 </LinearLayout>
