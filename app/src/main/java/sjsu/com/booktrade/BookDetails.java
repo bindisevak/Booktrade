@@ -3,6 +3,7 @@ package sjsu.com.booktrade;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -53,7 +54,16 @@ Button btn_buy;
                 String category = in.getStringExtra("category");
                 final String pickShip = in.getStringExtra("pickShip");
 
-                idDetails.setText(bookId);
+                Bundle extras = getIntent().getExtras();
+                Bitmap bmp = (Bitmap) extras.getParcelable("imagebitmap");
+
+                imageDetails.setImageBitmap(bmp );
+
+
+
+
+
+        idDetails.setText(bookId);
                 nameDetails.setText(name);
                 authorDetails.setText(author);
                 priceDetails.setText(price);
