@@ -102,6 +102,10 @@
         <!-- android:label="title_activity_postad" -->
         <!-- android:theme="@style/AppTheme.Light" /> -->
 
+        <activity
+            android:name=".BuyBook"
+            android:theme="@style/AppTheme.Light" />
+
     </application>
 
 </manifest>

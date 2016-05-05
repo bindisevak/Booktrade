@@ -9,12 +9,16 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class BookDetails extends AppCompatActivity {
+
+Button btn_buy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +26,7 @@ public class BookDetails extends AppCompatActivity {
         setContentView(R.layout.activity_book_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        btn_buy = (Button) findViewById(R.id.btn_buy);
 
 //        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
 //        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
@@ -46,7 +51,7 @@ public class BookDetails extends AppCompatActivity {
                 String price = in.getStringExtra("price");
                 String edition = in.getStringExtra("edition");
                 String category = in.getStringExtra("category");
-                String pickShip = in.getStringExtra("pickShip");
+                final String pickShip = in.getStringExtra("pickShip");
 
                 idDetails.setText(bookId);
                 nameDetails.setText(name);
@@ -56,7 +61,22 @@ public class BookDetails extends AppCompatActivity {
                 categoryDetails.setText(category);
                 pickShipDetails.setText(pickShip);
 
+
+        btn_buy.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent buybook = new Intent(getApplicationContext(), BuyBook.class);
+                if (pickShip.equals("pickup"))
+                    buybook.putExtra("pickup",true);
+                else buybook.putExtra("pickup", false);
+                startActivity(buybook);
+
             }
+        });
+
+
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
