@@ -30,6 +30,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -199,7 +200,7 @@ public class Home extends Fragment {
 
                     Intent in = new Intent(getContext(), BookDetails.class );
                     in.putExtra("id", bookId);
-                    // in.putExtra("image", (Serializable) image);
+                    //in.putExtra("image", (Serializable) image);
                     in.putExtra("name", name);
                     in.putExtra("author",  author);
                     in.putExtra("price", price);
