@@ -63,7 +63,7 @@ Button btn_buy;
 
 
 
-        idDetails.setText(bookId);
+                idDetails.setText(bookId);
                 nameDetails.setText(name);
                 authorDetails.setText(author);
                 priceDetails.setText(price);
