@@ -1,6 +1,8 @@
 package sjsu.com.booktrade;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -12,6 +14,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -85,7 +91,26 @@ public class BooksAdapter extends BaseAdapter {
         holder.category.setText(books.getCategory());
         holder.edition.setText(books.getEdition()+"");
         holder.shippingInfo.setText(books.getPickUpOrShip());
-        holder.image.setImageURI(Uri.parse(books.getImageURLSmall()));
+        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        try {
+            Bitmap bitmap;
+            Log.d("BooksAdapter",""+books.getImageURLSmall());
+            //ImageView i = (ImageView) myView.findViewById(R.);
+            if(books.getImageURLSmall() != null) {
+                bitmap = BitmapFactory.decodeStream((InputStream)new URL(books.getImageURLSmall()).getContent());
+
+            } else {
+                bitmap = BitmapFactory.decodeStream((InputStream)new URL("http://image10.bizrate-images.com/resize?sq=60&uid=2216744464").getContent());
+            }
+            holder.image.setImageBitmap( bitmap);;
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //holder.image.setImageURI(Uri.parse(books.getImageURLSmall()));
 
         return view;
     }
