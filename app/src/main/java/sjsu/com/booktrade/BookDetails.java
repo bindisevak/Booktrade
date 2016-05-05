@@ -58,7 +58,7 @@ public class BookDetails extends AppCompatActivity {
 
 
 
-        idDetails.setText(bookId);
+                idDetails.setText(bookId);
                 nameDetails.setText(name);
                 authorDetails.setText(author);
                 priceDetails.setText(price);
