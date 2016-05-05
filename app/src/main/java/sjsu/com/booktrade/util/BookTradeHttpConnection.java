@@ -200,6 +200,87 @@ public class BookTradeHttpConnection {
 
     }
 
+    public List<BooksTO> getBooksWithinFiftyMiles(String userId, String latitude, String longitude) {
+        List<BooksTO> bookListGPS = new ArrayList<BooksTO>();
+        HttpClient conn = new DefaultHttpClient();
+        HttpPost getData = new HttpPost(BookTradeConstants.BASE_REF_URL + "/books/fetchBooksWithinFiftyMiles");
+        HttpResponse response = null;
+        getData.setHeader("content-type", "application/json; charset=UTF-8");
+        InputStream myInfo = null;
+        String bInfo = null;
+        BooksTO books = null;
+        JSONObject data = new JSONObject();
+
+        try {
+            data.put("userId", Integer.parseInt(userId));
+            data.put("latitude", Double.parseDouble(latitude));
+            data.put("longitude", Double.parseDouble(longitude));
+            getData.setEntity(new StringEntity(data.toString()));
+
+            response = conn.execute(getData);
+
+            myInfo = (response.getEntity().getContent());
+            Log.d("String", String.valueOf(myInfo));
+            if (myInfo != null) {
+                bInfo = decodeMyData(myInfo);
+                Log.d("data", bInfo);
+                bookListGPS = new BookTradeJSONParser().parseBooksInfo(bInfo);
+
+            } else {
+                //bInfo = "No Data";
+            }
+
+
+            //System.out.print("********************" + bInfo);
+            Log.d("Hello Data", bInfo);
+
+        } catch (Exception ex) {
+            Log.d("book Info Error", ex.getStackTrace().toString());
+            ex.printStackTrace();
+        }
+        return (List<BooksTO>) bookListGPS;
+    }
+
+//    public List<BooksTO> getBooksList(String query) {
+//
+//        List<BooksTO> bookList = new ArrayList<BooksTO>();
+//        HttpClient conn = new DefaultHttpClient();
+//        HttpPost getData = new HttpPost(BookTradeConstants.BASE_REF_URL + "/books/");
+//        HttpResponse response = null;
+//        getData.setHeader("content-type", "application/json; charset=UTF-8");
+//        InputStream myInfo = null;
+//        String bInfo = null;
+//        BooksTO books = null;
+//        JSONObject data = new JSONObject();
+//
+//        try {
+//            data.put("Name", query);
+//
+//            getData.setEntity(new StringEntity(data.toString()));
+//
+//            response = conn.execute(getData);
+//
+//            myInfo = (response.getEntity().getContent());
+//            Log.d("String", String.valueOf(myInfo));
+//            if (myInfo != null) {
+//                bInfo = decodeMyData(myInfo);
+//                Log.d("data", bInfo);
+//                bookList = new BookTradeJSONParser().parseBooksInfo(bInfo);
+//
+//            } else {
+//                //bInfo = "No Data";
+//            }
+//
+//
+//            System.out.print("********************" + bInfo);
+//            //Log.d("Hello Data",bInfo);
+//
+//        } catch (Exception ex) {
+//            Log.d("book Info Error", ex.getStackTrace().toString());
+//            ex.printStackTrace();
+//        }
+//        return (List<BooksTO>) bookList;
+//    }
 
     private static String decodeMyData(InputStream inputStream) throws IOException {
         BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
@@ -213,7 +294,6 @@ public class BookTradeHttpConnection {
         return data;
 
     }
-
 
 
 

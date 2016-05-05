@@ -55,6 +55,7 @@ public class BookTradeJSONParser {
         try
         {
             bInfo = new BooksTO();
+            Log.d("Data", data);
             data="{Data:["+data.substring(data.indexOf("[")+1,data.length());
             data =data.substring(0,data.lastIndexOf("]"))+"]}";
             Log.d("Data",data);
