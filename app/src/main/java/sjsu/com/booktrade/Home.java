@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -200,16 +201,21 @@ public class Home extends Fragment {
 
                     Intent in = new Intent(getContext(), BookDetails.class );
                     in.putExtra("id", bookId);
-                    //in.putExtra("image", (Serializable) image);
+//                    in.putExtra("image",image);
                     in.putExtra("name", name);
                     in.putExtra("author",  author);
                     in.putExtra("price", price);
                     in.putExtra("pickShip", pickShip);
                     in.putExtra("edition", edition);
                     in.putExtra("category", category);
+                    image.buildDrawingCache();
+                    Bitmap image1= image.getDrawingCache();
 
-
+                    Bundle extras = new Bundle();
+                    extras.putParcelable("imagebitmap", image1);
+                    in.putExtras(extras);
                     startActivity(in);
+
                     //Toast.makeText(getApplicationContext(), textView.getText(), Toast.LENGTH_LONG).show();
 
                 }
