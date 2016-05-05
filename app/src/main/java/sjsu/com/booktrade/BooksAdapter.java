@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,8 +29,9 @@ import sjsu.com.booktrade.beans.BooksTO;
 /**
  * Created by Bindi on 4/26/2016.
  */
-public class BooksAdapter extends BaseAdapter {
+public class BooksAdapter extends BaseAdapter implements Filterable {
     private List<BooksTO> bookList;
+    private List<BooksTO> originalBookList;
     //private ArrayList<BooksTO> bookList;
    FragmentActivity context;
     LayoutInflater inflater;
@@ -40,6 +43,7 @@ public class BooksAdapter extends BaseAdapter {
 
 
     }
+
 
 
 
@@ -91,6 +95,7 @@ public class BooksAdapter extends BaseAdapter {
         holder.category.setText(books.getCategory());
         holder.edition.setText(books.getEdition()+"");
         holder.shippingInfo.setText(books.getPickUpOrShip());
+        holder.image.setImageURI(Uri.parse(books.getImageURLSmall()));
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
         try {
             Bitmap bitmap;
@@ -112,6 +117,7 @@ public class BooksAdapter extends BaseAdapter {
 
         //holder.image.setImageURI(Uri.parse(books.getImageURLSmall()));
 
+
         return view;
     }
 
@@ -128,5 +134,47 @@ public class BooksAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) {
         return position;
+    }
+
+    @Override
+    public Filter getFilter() {
+
+        Filter filter = new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults results = new FilterResults();
+                List<BooksTO> filteredBookList = new ArrayList<BooksTO>();
+
+                if (originalBookList == null) {
+                    originalBookList = new ArrayList<BooksTO>(bookList);
+
+                }
+
+                if (constraint == null || constraint.length() == 0) {
+                    results.count = originalBookList.size();
+                    results.values = originalBookList;
+
+                } else {
+                    constraint = constraint.toString().toLowerCase();
+                    for (BooksTO obj : originalBookList) {
+                        if (obj.getBookName().toLowerCase().contains(constraint.toString()) || obj.getAuthor().toLowerCase().contains(constraint.toString()) || obj.getCategory().toLowerCase().contains(constraint.toString())) {
+                            filteredBookList.add(obj);
+                        }
+                    }
+                    results.count = filteredBookList.size();
+                    results.values = filteredBookList;
+                }
+
+
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                bookList = (List<BooksTO>) results.values;
+                notifyDataSetChanged();
+            }
+        };
+        return filter;
     }
 }

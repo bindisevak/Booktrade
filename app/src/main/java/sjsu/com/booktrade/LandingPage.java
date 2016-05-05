@@ -1,5 +1,6 @@
 package sjsu.com.booktrade;
 
+import android.app.SearchManager;
 import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.Manifest;
@@ -14,6 +15,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -105,6 +107,19 @@ public class LandingPage extends AppCompatActivity
 //                transaction.commit();
 //            }
 //        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+////                        .setAction("Action", null).show();
+//                PostAd fragment = new PostAd();
+//                android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//                transaction.replace(R.id.content_frame, fragment);
+//                transaction.addToBackStack(null);
+//                transaction.commit();
+//            }
+//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -116,6 +131,10 @@ public class LandingPage extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         View header=navigationView.getHeaderView(0);
         //View myView = findViewById(R.id.nav_view);
+        TextView email = (TextView) header.findViewById(R.id.display_email);
+        TextView name = (TextView) header.findViewById(R.id.display_name);
+        email.setText(userInfo.getEmailId());
+        name.setText(userInfo.getFirstName());
 
         Home fragment = new Home();
         android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
