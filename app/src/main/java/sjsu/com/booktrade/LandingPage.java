@@ -98,6 +98,9 @@ public class LandingPage extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -190,7 +193,7 @@ public class LandingPage extends AppCompatActivity
 
             return true;
         } else if (id == R.id.action_logout) {
-            return true;
+            startActivity(new Intent(this, LoginActivity.class));
         }
 
         return super.onOptionsItemSelected(item);
