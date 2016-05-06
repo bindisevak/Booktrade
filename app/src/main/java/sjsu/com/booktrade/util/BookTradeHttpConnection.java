@@ -8,7 +8,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -214,6 +216,88 @@ public class BookTradeHttpConnection {
 
     }
 
+    public boolean addCredits(String uId, String credits)
+    {
+
+        HttpClient conn = new DefaultHttpClient();
+        HttpPost postData = new HttpPost(BookTradeConstants.BASE_REF_URL+"/payments/addCreditsToUser");
+        HttpResponse response =  null;
+        postData.setHeader("content-type", "application/json; charset=UTF-8");
+        JSONObject data = new JSONObject();
+        InputStream myInfo = null;
+        String uInfo = null;
+        //boolean bool = false;
+        try {
+
+            data.put("userId",uId);
+            data.put("credits",credits);
+            //Log.d("AddCreditsAPI",data.toString());
+            postData.setEntity(new StringEntity(data.toString()));
+            response = conn.execute(postData);
+
+            myInfo= (response.getEntity().getContent());
+            if ( myInfo!=null) {
+                uInfo = decodeMyData(myInfo);
+                Log.d( "**RESPONSE***" +
+                        "",uInfo);
+            } else {
+                uInfo = "No Data";
+            }
+//
+//
+//            System.out.print("********************"+uInfo);
+//            Log.d("Hello Data", uInfo);
+
+        }
+        catch(Exception ex)
+        {
+            Log.d("Login Error",ex.getStackTrace().toString());
+            ex.printStackTrace();
+        }
+        return true;
+
+    }
+
+    public String getCredits(String uId)
+    {
+
+        HttpClient conn = new DefaultHttpClient();
+        HttpPost postData = new HttpPost(BookTradeConstants.BASE_REF_URL+"/payments/getCredits");
+        HttpResponse response =  null;
+        postData.setHeader("content-type", "application/json; charset=UTF-8");
+        JSONObject data = new JSONObject();
+        InputStream myInfo = null;
+        String creditsInfo = null;
+        //boolean bool = false;
+        try {
+
+            data.put("userId",uId);
+            //Log.d("AddCreditsAPI",data.toString());
+            postData.setEntity(new StringEntity(data.toString()));
+            response = conn.execute(postData);
+
+            myInfo= (response.getEntity().getContent());
+            if ( myInfo!=null) {
+                creditsInfo = decodeMyData(myInfo);
+                Log.d( "**RESPONSE***" +
+                        "",creditsInfo);
+            } else {
+                creditsInfo = "No Data";
+            }
+//
+//
+//            System.out.print("********************"+uInfo);
+//            Log.d("Hello Data", uInfo);
+
+        }
+        catch(Exception ex)
+        {
+            Log.d("Login Error",ex.getStackTrace().toString());
+            ex.printStackTrace();
+        }
+        return creditsInfo;
+
+    }
 
 
 

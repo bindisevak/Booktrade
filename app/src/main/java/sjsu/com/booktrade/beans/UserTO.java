@@ -12,6 +12,7 @@ public class UserTO implements Serializable{
 	private String password;
 	private String userType;
 	private String contactNumber;
+	private int credits;
 
 	public int getUserId() {
 		return userId;
@@ -56,4 +57,11 @@ public class UserTO implements Serializable{
 		this.contactNumber = contactNumber;
 	}
 
+	public int getCredits() {
+		return credits;
+	}
+
+	public void setCredits(int credits) {
+		this.credits = credits;
+	}
 }

@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import sjsu.com.booktrade.beans.BooksTO;
 import sjsu.com.booktrade.beans.UserTO;
@@ -58,6 +59,8 @@ public class LandingPage extends AppCompatActivity
     Activity activity;
     ListView listview;
     TextView tView;
+    String currentCredits;
+    UserTO userInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +77,7 @@ public class LandingPage extends AppCompatActivity
 
         Intent intent = getIntent();
 
-        UserTO userInfo=(UserTO) intent.getSerializableExtra("UserInfo");
+        userInfo=(UserTO) intent.getSerializableExtra("UserInfo");
         Log.d("Email",userInfo.getEmailId());
         //String lName = intent.getStringExtra("lastName");
 
@@ -190,7 +193,28 @@ public class LandingPage extends AppCompatActivity
 
             // Handle the camera action
         } else if (id == R.id.nav_payment) {
+            Bundle b = new Bundle(  );
+            GetCredits rAction = new GetCredits();
+            try {
+                currentCredits = rAction.execute(""+userInfo.getUserId()).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+//            try {
+//                String s = rAction.execute("1").get();
+//                Log.d( "IN TRY ", s );
+//            } catch (InterruptedException e) {
+//                Log.d( "IN  CATCH", "CATCH" );
+//                e.printStackTrace();
+//            } catch (ExecutionException e) {
+//                e.printStackTrace();
+//            }
+            b.putString( "credits", currentCredits );
             Payment fragment = new Payment();
+            b.putString( "userid", ""+userInfo.getUserId() );
+            fragment.setArguments( b );
             android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.content_frame, fragment);
             transaction.addToBackStack(null);
@@ -237,5 +261,17 @@ public class LandingPage extends AppCompatActivity
 
     private boolean hasPermission(String perm) {
         return(PackageManager.PERMISSION_GRANTED==checkSelfPermission(perm));
+    }
+    private class GetCredits extends AsyncTask<String, String,String> {
+        Context context;
+
+        @Override
+        protected String doInBackground(String... params) {
+            BookTradeHttpConnection conn = new BookTradeHttpConnection();
+            Log.d( "", "MAIN HOON DON" );
+            currentCredits = conn.getCredits(params[0]);
+            return currentCredits;
+        }
+
     }
 }
