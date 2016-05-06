@@ -60,6 +60,7 @@
             android:layout_height="wrap_content"
             android:inputType="date"
             android:textSize="15dp"
+            android:hint="mm-dd-yyyy"
             android:gravity="center"
             android:layout_weight="1"
             />
