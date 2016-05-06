@@ -1,7 +1,6 @@
 package sjsu.com.booktrade.beans;
 
 public class AddressTO {
-
 	private int addressId;
 	private String addressline1;
 	private String addressline2;
@@ -10,6 +9,10 @@ public class AddressTO {
 	private String pincode;
 	private AddressType addresstype;
 	private int userId;
+	private double latitude;
+	private double longitude;
+	private int bookId;
+
 	public int getAddressId() {
 		return addressId;
 	}
@@ -57,5 +60,23 @@ public class AddressTO {
 	}
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+	public double getLatitude() {
+		return latitude;
+	}
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
+	public double getLongitude() {
+		return longitude;
+	}
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+	public int getBookId() {
+		return bookId;
+	}
+	public void setBookId(int bookId) {
+		this.bookId = bookId;
 	}
 }

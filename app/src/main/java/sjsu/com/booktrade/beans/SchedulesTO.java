@@ -4,15 +4,15 @@ import java.util.Date;
 import java.util.List;
 
 public class SchedulesTO {
-
 	private int scheduleId;
 	private int bookId;
 	private int buyerId;
-	private Date dateFrom;
-	private Date dateTo;
-	private boolean availableOnWeekends;
-	private List<TimeSlotTO> timeSlots;
-	
+	private int sellerId;
+	private String dayFrom;
+	private String dayTo;
+	private String timeFrom;
+	private String timeTo;
+
 	public int getScheduleId() {
 		return scheduleId;
 	}
@@ -31,29 +31,34 @@ public class SchedulesTO {
 	public void setBuyerId(int buyerId) {
 		this.buyerId = buyerId;
 	}
-	public Date getDateFrom() {
-		return dateFrom;
+	public String getDayFrom() {
+		return dayFrom;
 	}
-	public void setDateFrom(Date dateFrom) {
-		this.dateFrom = dateFrom;
+	public void setDayFrom(String dayFrom) {
+		this.dayFrom = dayFrom;
 	}
-	public Date getDateTo() {
-		return dateTo;
+	public String getDayTo() {
+		return dayTo;
 	}
-	public void setDateTo(Date dateTo) {
-		this.dateTo = dateTo;
+	public void setDayTo(String dayTo) {
+		this.dayTo = dayTo;
 	}
-	public boolean isAvailableOnWeekends() {
-		return availableOnWeekends;
+	public String getTimeFrom() {
+		return timeFrom;
 	}
-	public void setAvailableOnWeekends(boolean availableOnWeekends) {
-		this.availableOnWeekends = availableOnWeekends;
+	public void setTimeFrom(String timeFrom) {
+		this.timeFrom = timeFrom;
 	}
-	public List<TimeSlotTO> getTimeSlots() {
-		return timeSlots;
+	public String getTimeTo() {
+		return timeTo;
 	}
-	public void setTimeSlots(List<TimeSlotTO> timeSlots) {
-		this.timeSlots = timeSlots;
+	public void setTimeTo(String timeTo) {
+		this.timeTo = timeTo;
 	}
-	
+	public int getSellerId() {
+		return sellerId;
+	}
+	public void setSellerId(int sellerId) {
+		this.sellerId = sellerId;
+	}
 }

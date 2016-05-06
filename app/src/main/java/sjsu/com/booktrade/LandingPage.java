@@ -1,5 +1,7 @@
+
 package sjsu.com.booktrade;
 
+import android.app.SearchManager;
 import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.Manifest;
@@ -14,6 +16,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -33,6 +36,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import sjsu.com.booktrade.beans.BooksTO;
 import sjsu.com.booktrade.beans.UserTO;
@@ -45,11 +49,11 @@ public class LandingPage extends AppCompatActivity
 
 
     //GPS RELATED VARS
-    private static final int INITIAL_REQUEST=1337;
-    private static final String[] INITIAL_PERMS={
+    private static final int INITIAL_REQUEST = 1337;
+    private static final String[] INITIAL_PERMS = {
             Manifest.permission.ACCESS_FINE_LOCATION
     };
-    private static final String[] LOCATION_PERMS={
+    private static final String[] LOCATION_PERMS = {
             Manifest.permission.ACCESS_FINE_LOCATION
     };
 
@@ -58,6 +62,8 @@ public class LandingPage extends AppCompatActivity
     Activity activity;
     ListView listview;
     TextView tView;
+    String currentCredits;
+    UserTO userInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,11 +77,12 @@ public class LandingPage extends AppCompatActivity
 //        bookList = new ArrayList<>();
 
 
-
         Intent intent = getIntent();
 
-        UserTO userInfo=(UserTO) intent.getSerializableExtra("UserInfo");
+        userInfo=(UserTO) intent.getSerializableExtra("UserInfo");
         Log.d("Email",userInfo.getEmailId());
+        UserTO userInfo = (UserTO) intent.getSerializableExtra("UserInfo");
+        //Log.d("Email", userInfo.getEmailId());
         //String lName = intent.getStringExtra("lastName");
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -88,10 +95,22 @@ public class LandingPage extends AppCompatActivity
         ab.setDisplayShowTitleEnabled(false); // disable the default
 
 
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+////                        .setAction("Action", null).show();
+//                PostAd fragment = new PostAd();
+//                android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//                transaction.replace(R.id.content_frame, fragment);
+//                transaction.addToBackStack(null);
+//                transaction.commit();
+//            }
+//        });
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -114,8 +133,14 @@ public class LandingPage extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        View header=navigationView.getHeaderView(0);
+        View header = navigationView.getHeaderView(0);
         //View myView = findViewById(R.id.nav_view);
+        TextView email = (TextView) header.findViewById(R.id.display_email);
+        TextView name = (TextView) header.findViewById(R.id.display_name);
+        if(userInfo != null) {
+            email.setText(userInfo.getEmailId());
+            name.setText(userInfo.getFirstName());
+        }
 
         Home fragment = new Home();
         android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -126,10 +151,6 @@ public class LandingPage extends AppCompatActivity
     }
 
     BooksTO bInfo;
-
-
-
-
 
 
     @Override
@@ -162,12 +183,13 @@ public class LandingPage extends AppCompatActivity
             android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.content_frame, fragment);
             transaction.addToBackStack(null);
+            Bundle bundle = new Bundle();
+            bundle.putInt("userId", getIntent().getIntExtra("userId", 0));
+            fragment.setArguments(bundle);
             transaction.commit();
 
             return true;
-        }
-
-        else if (id == R.id.action_logout) {
+        } else if (id == R.id.action_logout) {
             return true;
         }
 
@@ -190,7 +212,28 @@ public class LandingPage extends AppCompatActivity
 
             // Handle the camera action
         } else if (id == R.id.nav_payment) {
+            Bundle b = new Bundle(  );
+            GetCredits rAction = new GetCredits();
+            try {
+                currentCredits = rAction.execute(""+userInfo.getUserId()).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+//            try {
+//                String s = rAction.execute("1").get();
+//                Log.d( "IN TRY ", s );
+//            } catch (InterruptedException e) {
+//                Log.d( "IN  CATCH", "CATCH" );
+//                e.printStackTrace();
+//            } catch (ExecutionException e) {
+//                e.printStackTrace();
+//            }
+            b.putString( "credits", currentCredits );
             Payment fragment = new Payment();
+            b.putString( "userid", ""+userInfo.getUserId() );
+            fragment.setArguments( b );
             android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.content_frame, fragment);
             transaction.addToBackStack(null);
@@ -224,7 +267,6 @@ public class LandingPage extends AppCompatActivity
         }
 
 
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -232,10 +274,22 @@ public class LandingPage extends AppCompatActivity
 
 
     private boolean canAccessLocation() {
-        return(hasPermission(Manifest.permission.ACCESS_FINE_LOCATION));
+        return (hasPermission(Manifest.permission.ACCESS_FINE_LOCATION));
     }
 
     private boolean hasPermission(String perm) {
-        return(PackageManager.PERMISSION_GRANTED==checkSelfPermission(perm));
+        return (PackageManager.PERMISSION_GRANTED == checkSelfPermission(perm));
+    }
+    private class GetCredits extends AsyncTask<String, String,String> {
+        Context context;
+
+        @Override
+        protected String doInBackground(String... params) {
+            BookTradeHttpConnection conn = new BookTradeHttpConnection();
+            Log.d( "", "MAIN HOON DON" );
+            currentCredits = conn.getCredits(params[0]);
+            return currentCredits;
+        }
+
     }
 }

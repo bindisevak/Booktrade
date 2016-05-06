@@ -20,4 +20,6 @@ public class About extends Fragment {
         myView = inflater.inflate(R.layout.about, container, false);
         return myView;
     }
+
+
 }
