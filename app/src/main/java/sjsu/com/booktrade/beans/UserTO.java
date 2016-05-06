@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 public class UserTO implements Serializable{
 
-
 	private int userId;
 	private String firstName;
 	private String lastName;

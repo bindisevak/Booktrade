@@ -132,8 +132,8 @@ public class Home extends Fragment {
             GPSTracker gps = new GPSTracker(getContext());
             presentLocation = gps.getLocation();
             if (gps.canGetLocation()) {
-                double latitude = 37.3551720;
-                double longitude = -121.8917830;
+                double latitude = gps.getLatitude();
+                double longitude = gps.getLongitude();
                 Log.d("Lat",latitude+"");
                 Log.d("Lang",longitude+"");
                 Toast.makeText(getContext(), "Your location is " + latitude + "Longitude is " + longitude, Toast.LENGTH_LONG).show();

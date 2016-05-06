@@ -85,13 +85,12 @@ Button btn_buy;
                 if (pickShip.equals("pickup"))
                     buybook.putExtra("pickup",true);
                 else buybook.putExtra("pickup", false);
-                UserTO userInfo=(UserTO) getIntent().getSerializableExtra("UserInfo");
+                UserTO userInfo= new UserTO();
                 buybook.putExtra("bookIdFromBookDetails",bookId);
                 buybook.putExtra("priceFromBookDetails", price);
                 buybook.putExtra("sellerIdFromBookDetails", sellerId);
                 buybook.putExtra("userId", userId);
                 buybook.putExtra("contactNumber", contactNumberStr);
-                Log.d("USERINFO--------",userInfo.getEmailId());
                 buybook.putExtra("UserInfo", userInfo);
                 Log.d("UserId:: ",">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+userId);
                 startActivity(buybook);

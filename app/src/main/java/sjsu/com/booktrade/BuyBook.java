@@ -1,5 +1,6 @@
 package sjsu.com.booktrade;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -84,6 +86,7 @@ public class BuyBook extends AppCompatActivity {
     }
 
     String message = null;
+    String messageForSeller = null;
     private void buyBook(Boolean pickup, String sellerId, String bookId, String price, String userId) {
 
         String pickupdate = null;
@@ -122,10 +125,14 @@ public class BuyBook extends AppCompatActivity {
         protected String doInBackground(String... params) {
             BookTradeHttpConnection conn = new BookTradeHttpConnection();
             bookId = conn.buyBook(params[0],params[1],params[2],params[3],params[4],params[5],params[6],params[7],params[8],params[9],params[10],params[11]);
+            StringBuilder addressBuilder = new StringBuilder();
+            addressBuilder.append(params[7]).append(" ").append(params[8]).append(" ").append(params[9]).append(" ").append(params[10]).append(" ").append(params[11]);
             if(params[0].equalsIgnoreCase("pickUp")){
                 message = " You need to Pick up the book on "+params[6] +" at "+params[7]+" "+params[3]+" credits have been deducted from your account.For any changes contact seller on "+getIntent().getStringExtra("contactNumber");
+                messageForSeller = "Bindi has placed order for the ad posted by you. User will be coming and picking up on "+params[5]+"at "+params[6];
             }else{
                 message = "Book will be shipped and delivered within a week at the given address!!";
+                messageForSeller = "Book needs to be Shipped at Following address: "+addressBuilder.toString();
             }
             Log.d("BookId ",bookId);
             return null;
@@ -134,13 +141,14 @@ public class BuyBook extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Log.d("User","-----------------------------------------"+userInfo.getEmailId());
+            //Log.d("User","-----------------------------------------"+userInfo.getEmailId());
             if(bookId!=null) {
 
-                Log.d("User","-----------------------------------------"+userInfo.getEmailId());
-                Intent mainAct = new Intent(context, LandingPage.class);
-                mainAct.putExtra("UserInfo",userInfo);
-                startActivity(mainAct);
+               String contactNumber = "4089170987";
+
+                SmsManager sms = SmsManager.getDefault();
+                // this is the function that does all the magic
+                sms.sendTextMessage(contactNumber, null, messageForSeller, null, null);
                 Toast.makeText(getApplicationContext(), "Sucessfully placed the order!! "+message, Toast.LENGTH_LONG).show();
             }
             else

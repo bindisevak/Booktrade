@@ -58,6 +58,10 @@ public class BooksAdapter extends BaseAdapter implements Filterable {
         ImageView image;
         TextView book_userId;
         TextView userContact;
+        TextView firstName;
+        TextView lastName;
+        TextView emailId;
+        TextView credits;
     }
 
     @Override
@@ -85,6 +89,7 @@ public class BooksAdapter extends BaseAdapter implements Filterable {
             holder.image = (ImageView) view.findViewById(R.id.book_image);
             holder.book_userId = (TextView)view.findViewById(R.id.book_userId);
             holder.userContact = (TextView)view.findViewById(R.id.book_userContact);
+
             view.setTag(holder);
         }
         else {
@@ -166,7 +171,9 @@ public class BooksAdapter extends BaseAdapter implements Filterable {
                 } else {
                     constraint = constraint.toString().toLowerCase();
                     for (BooksTO obj : originalBookList) {
-                        if (obj.getBookName().toLowerCase().contains(constraint.toString()) || obj.getAuthor().toLowerCase().contains(constraint.toString()) || obj.getCategory().toLowerCase().contains(constraint.toString())) {
+                        if (obj.getBookName().toLowerCase().contains(constraint.toString()) ||
+                                obj.getAuthor().toLowerCase().contains(constraint.toString()) ||
+                                obj.getCategory().toLowerCase().contains(constraint.toString())) {
                             filteredBookList.add(obj);
                         }
                     }
