@@ -35,7 +35,7 @@ public class BuyBook extends AppCompatActivity {
 
         Intent in =getIntent();
         Boolean pickup = in.getBooleanExtra("pickup",true);
-        
+
         if(pickup == true) {
             pickupLayout.setVisibility(View.VISIBLE);
             delivery.setVisibility(View.GONE);
