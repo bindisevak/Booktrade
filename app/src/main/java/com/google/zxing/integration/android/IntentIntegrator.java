@@ -35,6 +35,8 @@
         import android.os.Bundle;
         import android.util.Log;
 
+        import sjsu.com.booktrade.PostAd;
+
 /**
  * <p>A utility class which helps ease integration with Barcode Scanner via {@link Intent}s. This is a simple
  * way to invoke barcode scanning and receive the result, without any need to integrate, modify, or learn the
@@ -140,7 +142,7 @@ public class IntentIntegrator {
     );
 
     private final Activity activity;
-    private final Fragment fragment;
+    private final PostAd fragment;
 
     private String title;
     private String message;
@@ -163,7 +165,7 @@ public class IntentIntegrator {
      *  {@link #startActivityForResult(Intent, int)} will be called on the {@link Fragment} instead
      *  of an {@link Activity}
      */
-    public IntentIntegrator(Fragment fragment) {
+    public IntentIntegrator(PostAd fragment) {
         this.activity = fragment.getActivity();
         this.fragment = fragment;
         initializeConfiguration();

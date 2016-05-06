@@ -32,16 +32,13 @@
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:weightSum="1">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            android:id="@+id/mallik"
-            android:text=""/>
+
         <include layout="@layout/content_landing_page"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="50dp"
+
+            />
     </LinearLayout>
 
     <android.support.design.widget.NavigationView

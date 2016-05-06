@@ -21,17 +21,19 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,6 +81,10 @@ public class Home extends Fragment {
         Intent intent = getActivity().getIntent();
         UserTO userInfo=(UserTO) intent.getSerializableExtra("UserInfo");
         Log.d("Email",userInfo.getEmailId());
+        int userId = userInfo.getUserId();
+//        TextView user=(TextView) myView.findViewById(R.id.dummy);
+//        Log.d("Email", String.valueOf(userId));
+//        email.setText(userInfo.getEmailId());
         //String lName = intent.getStringExtra("lastName");
 
 //        Toolbar myToolbar = (Toolbar) getView().findViewById(R.id.toolbar);
@@ -119,24 +125,47 @@ public class Home extends Fragment {
 
         if (!canAccessLocation()) {
           requestPermissions(INITIAL_PERMS, INITIAL_REQUEST);
+            BooksAction bAction = new BooksAction(this);
+            bAction.execute();
         }
         else{
             GPSTracker gps = new GPSTracker(getContext());
             presentLocation = gps.getLocation();
             if (gps.canGetLocation()) {
-                double latitude = gps.getLatitude();
-                double longitude = gps.getLongitude();
+                double latitude = 37.3551720;
+                double longitude = -121.8917830;
                 Log.d("Lat",latitude+"");
                 Log.d("Lang",longitude+"");
                 Toast.makeText(getContext(), "Your location is " + latitude + "Longitude is " + longitude, Toast.LENGTH_LONG).show();
+                BooksActionGPS bActionGPS = new BooksActionGPS(this);
+                bActionGPS.execute(String.valueOf(userId), String.valueOf(latitude), String.valueOf(longitude));
             } else {
-                gps.showSettingsAlert();
+                //gps.showSettingsAlert();
+                BooksAction bAction = new BooksAction(this);
+                bAction.execute();
             }
 
         }
 
-        BooksAction bAction = new BooksAction(this);
-        bAction.execute();
+        EditText filterEditText = (EditText) myView.findViewById(R.id.filterText);
+
+        // Add Text Change Listener to EditText
+        filterEditText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Call back the Adapter with current character to Filter
+                adapter.getFilter().filter(s.toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
 
         return myView;
     }
@@ -184,6 +213,7 @@ public class Home extends Fragment {
             //List result = new ArrayList<BooksTO>();
             Log.d("TAG","size>>>"+bList.size());
             adapter = new BooksAdapter(getActivity(), R.layout.display_books, bList);
+
             // listview=new ListView(LandingPage.this);
             listview.setAdapter(adapter);
             listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -198,22 +228,105 @@ public class Home extends Fragment {
                     String pickShip = ((((TextView)view.findViewById(R.id.book_pickUpShip))).getText().toString());
                     String edition = ((((TextView)view.findViewById(R.id.book_edition))).getText().toString());
                     String category = ((((TextView)view.findViewById(R.id.book_category))).getText().toString());
+                    String sellerId = ((TextView)view.findViewById(R.id.book_userId)).getText().toString();
+                    String contactNumber = ((TextView)view.findViewById(R.id.book_userContact)).getText().toString();
 
                     Intent in = new Intent(getContext(), BookDetails.class );
                     in.putExtra("id", bookId);
-//                    in.putExtra("image",image);
+                    // in.putExtra("image", (Serializable) image);
                     in.putExtra("name", name);
                     in.putExtra("author",  author);
                     in.putExtra("price", price);
                     in.putExtra("pickShip", pickShip);
                     in.putExtra("edition", edition);
                     in.putExtra("category", category);
+                    in.putExtra("sellerId", sellerId);
+                    in.putExtra("contactNumber", contactNumber);
+
+                    Intent intent = getActivity().getIntent();
+                    UserTO userInfo=(UserTO) intent.getSerializableExtra("UserInfo");
+                    int userId = userInfo.getUserId();
+                    in.putExtra("userId", userId);
+                    in.putExtra("UserInfo", userInfo);
                     image.buildDrawingCache();
                     Bitmap image1= image.getDrawingCache();
 
                     Bundle extras = new Bundle();
                     extras.putParcelable("imagebitmap", image1);
                     in.putExtras(extras);
+
+                    startActivity(in);
+                    //Toast.makeText(getApplicationContext(), textView.getText(), Toast.LENGTH_LONG).show();
+
+                }
+            });
+        }
+    }
+
+    private class BooksActionGPS extends AsyncTask<String, Double, String> {
+        Home context;
+        List<BooksTO> bListGPS = new ArrayList<BooksTO>();
+
+        private BooksActionGPS(Home context) {
+            this.context = context;
+        }
+
+
+        @Override
+        protected String doInBackground(String... params) {
+
+
+            BookTradeHttpConnection conn = new BookTradeHttpConnection();
+
+            bListGPS = conn.getBooksWithinFiftyMiles(params[0], params[1], params[2]);
+
+
+            Log.d("MSG", "I am before for");
+
+            return "";
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            // Adding Items to ListView
+            //if(result != null){
+            //List result = new ArrayList<BooksTO>();
+            Log.d("TAG", "size>>>" + bListGPS.size());
+            adapter = new BooksAdapter(getActivity(), R.layout.display_books, bListGPS);
+            // listview=new ListView(LandingPage.this);
+            listview.setAdapter(adapter);
+            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    //BooksTO books = (BooksTO)parent.getItemAtPosition(position);
+                    String bookId = ((((TextView) view.findViewById(R.id.book_id))).getText().toString());
+                    ImageView image = (ImageView) view.findViewById(R.id.book_image);
+                    String name = (((TextView) view.findViewById(R.id.book_name))).getText().toString();
+                    String author = (((TextView) view.findViewById(R.id.book_author))).getText().toString();
+                    String price = ((((TextView) view.findViewById(R.id.book_price))).getText().toString());
+                    String pickShip = ((((TextView) view.findViewById(R.id.book_pickUpShip))).getText().toString());
+                    String edition = ((((TextView) view.findViewById(R.id.book_edition))).getText().toString());
+                    String category = ((((TextView) view.findViewById(R.id.book_category))).getText().toString());
+                    String sellerId = ((TextView)view.findViewById(R.id.book_userId)).getText().toString();
+                    String contactNumber = ((TextView)view.findViewById(R.id.book_userContact)).getText().toString();
+
+                    Intent in = new Intent(getContext(), BookDetails.class);
+                    in.putExtra("id", bookId);
+                    // in.putExtra("image", (Serializable) image);
+                    in.putExtra("name", name);
+                    in.putExtra("author", author);
+                    in.putExtra("price", price);
+                    in.putExtra("pickShip", pickShip);
+                    in.putExtra("edition", edition);
+                    in.putExtra("category", category);
+                    in.putExtra("sellerId", sellerId);
+                    in.putExtra("contactNumber", contactNumber);
+                    Intent intent = getActivity().getIntent();
+                    UserTO userInfo=(UserTO) intent.getSerializableExtra("UserInfo");
+                    String userId = String.valueOf(userInfo.getUserId());
+                    in.putExtra("userId", userId);
+
                     startActivity(in);
 
                     //Toast.makeText(getApplicationContext(), textView.getText(), Toast.LENGTH_LONG).show();

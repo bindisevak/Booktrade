@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import sjsu.com.booktrade.beans.UserTO;
+
 public class BookDetails extends AppCompatActivity {
 
 Button btn_buy;
@@ -44,25 +46,26 @@ Button btn_buy;
                 TextView editionDetails = (TextView) findViewById(R.id.book_editionDetails);
                 TextView categoryDetails = (TextView) findViewById(R.id.book_categoryDetails);
                 TextView pickShipDetails = (TextView) findViewById(R.id.book_pickUpShipDetails);
+                TextView bookUserId = (TextView) findViewById(R.id.book_userIdMain);
+                TextView contactNumber = (TextView)findViewById(R.id.book_userContactMain);
 
                 Intent in = getIntent();
                 String name = in.getStringExtra("name");
-                String bookId = in.getStringExtra("id");
+                final String bookId = in.getStringExtra("id");
                 String author = in.getStringExtra("author");
-                String price = in.getStringExtra("price");
+                final String price = in.getStringExtra("price");
                 String edition = in.getStringExtra("edition");
                 String category = in.getStringExtra("category");
                 final String pickShip = in.getStringExtra("pickShip");
+                final String sellerId = in.getStringExtra("sellerId");
+                final String userId = in.getStringExtra("userId");
+                final String contactNumberStr = in.getStringExtra("contactNumber");
+
 
                 Bundle extras = getIntent().getExtras();
                 Bitmap bmp = (Bitmap) extras.getParcelable("imagebitmap");
 
                 imageDetails.setImageBitmap(bmp );
-
-
-
-
-
                 idDetails.setText(bookId);
                 nameDetails.setText(name);
                 authorDetails.setText(author);
@@ -70,7 +73,9 @@ Button btn_buy;
                 editionDetails.setText(edition);
                 categoryDetails.setText(category);
                 pickShipDetails.setText(pickShip);
-
+        Log.d("Seller Id::::::: ",sellerId);
+                bookUserId.setText(sellerId);
+                contactNumber.setText(contactNumberStr);
 
         btn_buy.setOnClickListener(new View.OnClickListener() {
 
@@ -80,6 +85,15 @@ Button btn_buy;
                 if (pickShip.equals("pickup"))
                     buybook.putExtra("pickup",true);
                 else buybook.putExtra("pickup", false);
+                UserTO userInfo=(UserTO) getIntent().getSerializableExtra("UserInfo");
+                buybook.putExtra("bookIdFromBookDetails",bookId);
+                buybook.putExtra("priceFromBookDetails", price);
+                buybook.putExtra("sellerIdFromBookDetails", sellerId);
+                buybook.putExtra("userId", userId);
+                buybook.putExtra("contactNumber", contactNumberStr);
+                Log.d("USERINFO--------",userInfo.getEmailId());
+                buybook.putExtra("UserInfo", userInfo);
+                Log.d("UserId:: ",">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+userId);
                 startActivity(buybook);
 
             }

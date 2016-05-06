@@ -131,6 +131,7 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d("String", "I am here");
                 mainAct.putExtra("firstName", uInfo.getFirstName());
                 mainAct.putExtra("lastName", uInfo.getLastName());
+                mainAct.putExtra("userId", uInfo.getUserId());
                 startActivity(mainAct);
 
                 //Toast.makeText(getApplicationContext(), " Login Credentials are valid !!", Toast.LENGTH_LONG).show();
