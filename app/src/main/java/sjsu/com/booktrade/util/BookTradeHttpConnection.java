@@ -56,10 +56,10 @@ public class BookTradeHttpConnection {
 
         }
         finally {
-        conn.disconnect();
+            conn.disconnect();
         }
         return JSONData;
-        }
+    }
 
     public UserTO loginUser(String uName,String passwd)
     {
@@ -115,7 +115,7 @@ public class BookTradeHttpConnection {
         postData.setHeader("content-type", "application/json; charset=UTF-8");
         JSONObject data = new JSONObject();
         InputStream myInfo = null;
-       String uInfo = null;
+        String uInfo = null;
         //UserTO user = null;
         try {
 
@@ -381,58 +381,141 @@ public class BookTradeHttpConnection {
 
     public String buyBook(String pickup, String sellerId, String bookId, String price, String userId, String pickupDate, String pickupTime, String addressLine1,
                           String addressLine2, String city, String state, String postalCode) {
-            int books = 0;
-            HttpClient conn = new DefaultHttpClient();
-            HttpPost postData = new HttpPost(BookTradeConstants.BASE_REF_URL+"/buyer/placeOrder");
-            HttpResponse response =  null;
-            postData.setHeader("content-type", "application/json; charset=UTF-8");
-            JSONObject data = new JSONObject();
-            InputStream myInfo = null;
-            String bInfo = null;
-            try {
+        int books = 0;
+        HttpClient conn = new DefaultHttpClient();
+        HttpPost postData = new HttpPost(BookTradeConstants.BASE_REF_URL+"/buyer/placeOrder");
+        HttpResponse response =  null;
+        postData.setHeader("content-type", "application/json; charset=UTF-8");
+        JSONObject data = new JSONObject();
+        InputStream myInfo = null;
+        String bInfo = null;
+        try {
 
-                data.put("sellerId",sellerId);
-                data.put("bookId",bookId);
-                data.put("price",price);
-                data.put("userId",userId);
-                data.put("pickUpOrShip", pickup);
-                data.put("pickupDate",pickupDate);
-                data.put("pickUpTime",pickupTime);
-                data.put("addressLine1",addressLine1);
-                data.put("addressLine2",addressLine2);
-                data.put("city",city);
-                data.put("state",state);
-                data.put("postalCode",postalCode);
-                Log.d("Data getting passed:: ",data.toString());
-                postData.setEntity(new StringEntity(data.toString()));
+            data.put("sellerId",sellerId);
+            data.put("bookId",bookId);
+            data.put("price",price);
+            data.put("userId",userId);
+            data.put("pickUpOrShip", pickup);
+            data.put("pickupDate",pickupDate);
+            data.put("pickUpTime",pickupTime);
+            data.put("addressLine1",addressLine1);
+            data.put("addressLine2",addressLine2);
+            data.put("city",city);
+            data.put("state",state);
+            data.put("postalCode",postalCode);
+            Log.d("Data getting passed:: ",data.toString());
+            postData.setEntity(new StringEntity(data.toString()));
 
-                response = conn.execute(postData);
-                myInfo= (response.getEntity().getContent());
+            response = conn.execute(postData);
+            myInfo= (response.getEntity().getContent());
 
-                if(myInfo!=null)
-                {
-                    bInfo = decodeMyData(myInfo);
-                    Log.d("books:::",bInfo);
-                    if(bInfo != null)
-                        books = Integer.parseInt(bInfo);
-                    if(books == 0){
-                        return null;
-                    }
-                }
-                else
-                {
-                    bInfo = "No Data";
+            if(myInfo!=null)
+            {
+                bInfo = decodeMyData(myInfo);
+                Log.d("books:::",bInfo);
+                if(bInfo != null)
+                    books = Integer.parseInt(bInfo);
+                if(books == 0){
                     return null;
                 }
-                System.out.print("********************"+bInfo);
-                Log.d("Hello Data", bInfo);
             }
-            catch(Exception ex)
+            else
             {
-                Log.d("Login Error",ex.getStackTrace().toString());
-                ex.printStackTrace();
+                bInfo = "No Data";
+                return null;
             }
-
-            return String.valueOf(bInfo);
+            System.out.print("********************"+bInfo);
+            Log.d("Hello Data", bInfo);
         }
+        catch(Exception ex)
+        {
+            Log.d("Login Error",ex.getStackTrace().toString());
+            ex.printStackTrace();
+        }
+
+        return String.valueOf(bInfo);
+    }
+    public boolean addCredits(String uId, String credits)
+    {
+
+        HttpClient conn = new DefaultHttpClient();
+        HttpPost postData = new HttpPost(BookTradeConstants.BASE_REF_URL+"/payments/addCreditsToUser");
+        HttpResponse response =  null;
+        postData.setHeader("content-type", "application/json; charset=UTF-8");
+        JSONObject data = new JSONObject();
+        InputStream myInfo = null;
+        String uInfo = null;
+        //boolean bool = false;
+        try {
+
+            data.put("userId",uId);
+            data.put("credits",credits);
+            //Log.d("AddCreditsAPI",data.toString());
+            postData.setEntity(new StringEntity(data.toString()));
+            response = conn.execute(postData);
+
+            myInfo= (response.getEntity().getContent());
+            if ( myInfo!=null) {
+                uInfo = decodeMyData(myInfo);
+                Log.d( "**RESPONSE***" +
+                        "",uInfo);
+            } else {
+                uInfo = "No Data";
+            }
+//
+//
+//            System.out.print("********************"+uInfo);
+//            Log.d("Hello Data", uInfo);
+
+        }
+        catch(Exception ex)
+        {
+            Log.d("Login Error",ex.getStackTrace().toString());
+            ex.printStackTrace();
+        }
+        return true;
+
+    }
+
+    public String getCredits(String uId)
+    {
+
+        HttpClient conn = new DefaultHttpClient();
+        HttpPost postData = new HttpPost(BookTradeConstants.BASE_REF_URL+"/payments/getCredits");
+        HttpResponse response =  null;
+        postData.setHeader("content-type", "application/json; charset=UTF-8");
+        JSONObject data = new JSONObject();
+        InputStream myInfo = null;
+        String creditsInfo = null;
+        //boolean bool = false;
+        try {
+
+            data.put("userId",uId);
+            //Log.d("AddCreditsAPI",data.toString());
+            postData.setEntity(new StringEntity(data.toString()));
+            response = conn.execute(postData);
+
+            myInfo= (response.getEntity().getContent());
+            if ( myInfo!=null) {
+                creditsInfo = decodeMyData(myInfo);
+                Log.d( "**RESPONSE***" +
+                        "",creditsInfo);
+            } else {
+                creditsInfo = "No Data";
+            }
+//
+//
+//            System.out.print("********************"+uInfo);
+//            Log.d("Hello Data", uInfo);
+
+        }
+        catch(Exception ex)
+        {
+            Log.d("Login Error",ex.getStackTrace().toString());
+            ex.printStackTrace();
+        }
+        return creditsInfo;
+
+    }
+
 }
