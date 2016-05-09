@@ -166,7 +166,7 @@ public class BooksAdapter extends BaseAdapter implements Filterable {
                 } else {
                     constraint = constraint.toString().toLowerCase();
                     for (BooksTO obj : originalBookList) {
-                        if (obj.getBookName().toLowerCase().contains(constraint.toString()) || obj.getAuthor().toLowerCase().contains(constraint.toString()) || obj.getCategory().toLowerCase().contains(constraint.toString())) {
+                        if (obj.getBookName().toLowerCase().contains(constraint.toString()) || obj.getAuthor().toLowerCase().contains(constraint.toString())) {
                             filteredBookList.add(obj);
                         }
                     }

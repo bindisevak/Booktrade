@@ -58,6 +58,8 @@ public class BuyBook extends AppCompatActivity {
         userInfo=(UserTO) getIntent().getSerializableExtra("UserInfo");
 
         Intent in =getIntent();
+        //Boolean pickup = in.getBooleanExtra("pickup",true);
+
         final Boolean pickup = in.getBooleanExtra("pickup",true);
         final String sellerId = in.getStringExtra("sellerIdFromBookDetails");
         final String bookId = in.getStringExtra("bookIdFromBookDetails");

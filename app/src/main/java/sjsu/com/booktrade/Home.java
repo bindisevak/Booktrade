@@ -124,7 +124,7 @@ public class Home extends Fragment {
 //        email.setText(userInfo.getEmailId());
 
         if (!canAccessLocation()) {
-          requestPermissions(INITIAL_PERMS, INITIAL_REQUEST);
+            //requestPermissions(INITIAL_PERMS, INITIAL_REQUEST);
             BooksAction bAction = new BooksAction(this);
             bAction.execute();
         }
