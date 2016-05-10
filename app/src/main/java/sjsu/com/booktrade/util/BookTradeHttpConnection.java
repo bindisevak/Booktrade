@@ -518,4 +518,105 @@ public class BookTradeHttpConnection {
 
     }
 
+    public void saveInBrowsingHistory(String bookId, String userId, String category) {
+
+        HttpClient conn = new DefaultHttpClient();
+        HttpPost postData = new HttpPost(BookTradeConstants.BASE_REF_URL+"/recommendation/addToUserBrowsing");
+        HttpResponse response =  null;
+        postData.setHeader("content-type", "application/json; charset=UTF-8");
+        JSONObject data = new JSONObject();
+        InputStream myInfo = null;
+        try {
+
+            data.put("userId",userId);
+            data.put("bookId",bookId);
+            data.put("category", category);
+            postData.setEntity(new StringEntity(data.toString()));
+
+            response = conn.execute(postData);
+            myInfo= (response.getEntity().getContent());
+        }
+        catch(Exception ex)
+        {
+            Log.d("Error Browsing",ex.getStackTrace().toString());
+            ex.printStackTrace();
+        }
+
+    }
+
+    public List<BooksTO> getSoldTransaction(String userId) {
+
+        List<BooksTO> sHistory = new ArrayList<BooksTO>();
+        HttpClient conn = new DefaultHttpClient();
+        HttpPost postData = new HttpPost(BookTradeConstants.BASE_REF_URL + "/buyer/fetchSoldBooks");
+        HttpResponse response = null;
+        JSONObject data = new JSONObject();
+        postData.setHeader("content-type", "application/json; charset=UTF-8");
+        InputStream myInfo = null;
+        String bInfo = null;
+        BooksTO books = null;
+
+        try {
+            data.put("userId", Integer.parseInt(userId));
+            postData.setEntity(new StringEntity(data.toString()));
+            response = conn.execute(postData);
+            myInfo = (response.getEntity().getContent());
+            Log.d("String", String.valueOf(myInfo));
+            if (myInfo != null) {
+                bInfo = decodeMyData(myInfo);
+                Log.d("data", bInfo);
+                sHistory = new BookTradeJSONParser().parseSoldHistoryInfo(bInfo);
+
+            } else {
+                //bInfo = "No Data";
+            }
+
+
+            System.out.print("********************" + bInfo);
+            //Log.d("Hello Data",bInfo);
+
+        } catch (Exception ex) {
+            Log.d("book Info Error", ex.getStackTrace().toString());
+            ex.printStackTrace();
+        }
+        return (List<BooksTO>) sHistory;
+    }
+
+    public List<BooksTO> getBoughtTransaction(String userId) {
+
+        List<BooksTO> bHistory = new ArrayList<BooksTO>();
+        HttpClient conn = new DefaultHttpClient();
+        HttpPost postData = new HttpPost(BookTradeConstants.BASE_REF_URL + "/buyer/fetchBoughtBooks");
+        HttpResponse response = null;
+        JSONObject data = new JSONObject();
+        postData.setHeader("content-type", "application/json; charset=UTF-8");
+        InputStream myInfo = null;
+        String bInfo = null;
+        BooksTO books = null;
+
+        try {
+            data.put("userId", Integer.parseInt(userId));
+            postData.setEntity(new StringEntity(data.toString()));
+            response = conn.execute(postData);
+            myInfo = (response.getEntity().getContent());
+            Log.d("String", String.valueOf(myInfo));
+            if (myInfo != null) {
+                bInfo = decodeMyData(myInfo);
+                Log.d("data", bInfo);
+                bHistory = new BookTradeJSONParser().parseBoughtHistoryInfo(bInfo);
+
+            } else {
+                //bInfo = "No Data";
+            }
+
+
+            System.out.print("********************" + bInfo);
+            //Log.d("Hello Data",bInfo);
+
+        } catch (Exception ex) {
+            Log.d("book Info Error", ex.getStackTrace().toString());
+            ex.printStackTrace();
+        }
+        return (List<BooksTO>) bHistory;
+    }
 }
