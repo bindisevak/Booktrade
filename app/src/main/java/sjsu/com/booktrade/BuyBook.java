@@ -136,13 +136,11 @@ public class BuyBook extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Log.d("User","-----------------------------------------"+userInfo.getEmailId());
             if(bookId!=null) {
 
-                Log.d("User","-----------------------------------------"+userInfo.getEmailId());
-                Intent mainAct = new Intent(context, LandingPage.class);
+                /*Intent mainAct = new Intent(context, LandingPage.class);
                 mainAct.putExtra("UserInfo",userInfo);
-                startActivity(mainAct);
+                startActivity(mainAct);*/
                 Toast.makeText(getApplicationContext(), "Sucessfully placed the order!! "+message, Toast.LENGTH_LONG).show();
             }
             else

@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -256,5 +257,150 @@ public class BookTradeJSONParser {
 
         }
         return schedulesTO;
+    }
+
+    public List<BooksTO> parseSoldHistoryInfo(String data) {
+        BooksTO bInfo = null;
+        JSONObject jsonObject = null;
+        List<BooksTO> sHistory = null;
+        try {
+            bInfo = new BooksTO();
+            Log.d("Data", data);
+            data = "{Data:[" + data.substring(data.indexOf("[") + 1, data.length());
+            data = data.substring(0, data.lastIndexOf("]")) + "]}";
+            Log.d("Data", data);
+            jsonObject = new JSONObject(data);
+            JSONArray bookListObj = jsonObject.getJSONArray("Data");
+
+            sHistory = new ArrayList<BooksTO>();
+
+            for (int i = 0; i < bookListObj.length(); i++) {
+
+                jsonObject = (JSONObject) bookListObj.get(i);
+                bInfo = new BooksTO();
+                String user = null;
+                String schedules = null;
+                if (jsonObject.getString("user") != null && jsonObject.getString("user").length() > 0) {
+                    user = jsonObject.getString("user");
+                }
+                if (jsonObject.getString("schedules") != null && jsonObject.getString("schedules").length() > 0) {
+                    schedules = jsonObject.getString("schedules");
+                }
+
+                if (jsonObject.has("bookId") && jsonObject.get("bookId") != null)
+                    bInfo.setBookId((Integer) jsonObject.get("bookId"));
+                if (jsonObject.has("bookName") && jsonObject.get("bookName") != null)
+                    bInfo.setBookName((String) jsonObject.get("bookName"));
+                if (jsonObject.has("author") && jsonObject.get("author") != null)
+                    bInfo.setAuthor((String) jsonObject.get("author"));
+                if (jsonObject.has("edition") && jsonObject.get("edition") != null)
+                    bInfo.setEdition((Integer) jsonObject.get("edition"));
+                if (jsonObject.has("pickUpOrShip") && jsonObject.get("pickUpOrShip") != null) {
+                    bInfo.setPickUpOrShip((String) jsonObject.getString("pickUpOrShip"));
+                }
+                if (jsonObject.has("price") && jsonObject.get("price") != null)
+                    bInfo.setPrice((Double) jsonObject.get("price"));
+                if (user != null && user.length() > 0 && user != "null")
+                    bInfo.setUser(parseUserInfo(user));
+
+                // if (jsonObject.has("imageURLSmall") && jsonObject.getString("imageURLSmall") != "null")
+                bInfo.setImageURLSmall((String) jsonObject.getString("imageURLSmall"));
+                //  if (jsonObject.has("imageURLLarge") && jsonObject.getString("imageURLLarge") != "null")
+                bInfo.setImageURLLarge((String) jsonObject.getString("imageURLLarge"));
+                if (schedules != null && schedules.length() > 0 && schedules != "null")
+                    bInfo.setSchedules(parseSchedulesInfo(schedules));
+//                if (jsonObject.has("transactionComplete") && jsonObject.get("transactionComplete") != null)
+//                    bInfo.setTransactionComplete((boolean) jsonObject.get("transactionComplete"));
+                if (jsonObject.has("category") && jsonObject.get("category") != null && jsonObject.getString("category") != "null") {
+                    bInfo.setCategory((String) jsonObject.get("category"));
+                }
+                sHistory.add(bInfo);
+                Log.d("Hi", String.valueOf(sHistory));
+
+            }
+
+
+        } catch (Exception ex) {
+            Log.d("JSON Parser Exception", ex.getStackTrace().toString());
+            ex.printStackTrace();
+            bInfo = null;
+
+        }
+
+        return sHistory;
+
+
+    }
+
+    public List<BooksTO> parseBoughtHistoryInfo(String data) {
+
+        BooksTO bInfo = null;
+        JSONObject jsonObject = null;
+        List<BooksTO> bHistory = null;
+        try {
+            bInfo = new BooksTO();
+            Log.d("Data", data);
+            data = "{Data:[" + data.substring(data.indexOf("[") + 1, data.length());
+            data = data.substring(0, data.lastIndexOf("]")) + "]}";
+            Log.d("Data", data);
+            jsonObject = new JSONObject(data);
+            JSONArray bookListObj = jsonObject.getJSONArray("Data");
+
+            bHistory = new ArrayList<BooksTO>();
+
+            for (int i = 0; i < bookListObj.length(); i++) {
+
+                jsonObject = (JSONObject) bookListObj.get(i);
+                bInfo = new BooksTO();
+                String user = null;
+                String schedules = null;
+                if (jsonObject.getString("user") != null && jsonObject.getString("user").length() > 0) {
+                    user = jsonObject.getString("user");
+                }
+                if (jsonObject.getString("schedules") != null && jsonObject.getString("schedules").length() > 0) {
+                    schedules = jsonObject.getString("schedules");
+                }
+
+                if (jsonObject.has("bookId") && jsonObject.get("bookId") != null)
+                    bInfo.setBookId((Integer) jsonObject.get("bookId"));
+                if (jsonObject.has("bookName") && jsonObject.get("bookName") != null)
+                    bInfo.setBookName((String) jsonObject.get("bookName"));
+                if (jsonObject.has("author") && jsonObject.get("author") != null)
+                    bInfo.setAuthor((String) jsonObject.get("author"));
+                if (jsonObject.has("edition") && jsonObject.get("edition") != null)
+                    bInfo.setEdition((Integer) jsonObject.get("edition"));
+                if (jsonObject.has("pickUpOrShip") && jsonObject.get("pickUpOrShip") != null) {
+                    bInfo.setPickUpOrShip((String) jsonObject.getString("pickUpOrShip"));
+                }
+                if (jsonObject.has("price") && jsonObject.get("price") != null)
+                    bInfo.setPrice((Double) jsonObject.get("price"));
+                if (user != null && user.length() > 0 && user != "null")
+                    bInfo.setUser(parseUserInfo(user));
+
+                // if (jsonObject.has("imageURLSmall") && jsonObject.getString("imageURLSmall") != "null")
+                bInfo.setImageURLSmall((String) jsonObject.getString("imageURLSmall"));
+                //  if (jsonObject.has("imageURLLarge") && jsonObject.getString("imageURLLarge") != "null")
+                bInfo.setImageURLLarge((String) jsonObject.getString("imageURLLarge"));
+                if (schedules != null && schedules.length() > 0 && schedules != "null")
+                    bInfo.setSchedules(parseSchedulesInfo(schedules));
+//                if (jsonObject.has("transactionComplete") && jsonObject.get("transactionComplete") != null)
+//                    bInfo.setTransactionComplete((boolean) jsonObject.get("transactionComplete"));
+                if (jsonObject.has("category") && jsonObject.get("category") != null && jsonObject.getString("category") != "null") {
+                    bInfo.setCategory((String) jsonObject.get("category"));
+                }
+                bHistory.add(bInfo);
+                Log.d("Hi", String.valueOf(bHistory));
+
+            }
+
+
+        } catch (Exception ex) {
+            Log.d("JSON Parser Exception", ex.getStackTrace().toString());
+            ex.printStackTrace();
+            bInfo = null;
+
+        }
+
+        return bHistory;
     }
 }

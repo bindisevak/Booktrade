@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import sjsu.com.booktrade.beans.BooksTO;
@@ -282,18 +283,7 @@ public class BookTradeHttpConnection {
 //        return (List<BooksTO>) bookList;
 //    }
 
-    private static String decodeMyData(InputStream inputStream) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
-        String line = "";
-        String data = "";
-        while((line = bufferedReader.readLine()) != null) {
-            data += line;
-            Log.d("Database", line);
-        }
-        inputStream.close();
-        return data;
 
-    }
 
     public boolean postAd(String name, String author, String category, String imageURLLarge, String imageURLSmall, String pickUporShipOption, String editionVal,
                           String creditsVal, String userId, String notesStr, String address1,
@@ -517,5 +507,95 @@ public class BookTradeHttpConnection {
         return creditsInfo;
 
     }
+
+    public List<BooksTO> getSoldTransaction(String userId) {
+
+        List<BooksTO> sHistory = new ArrayList<BooksTO>();
+        HttpClient conn = new DefaultHttpClient();
+        HttpPost postData = new HttpPost(BookTradeConstants.BASE_REF_URL + "/buyer/fetchSoldBooks");
+        HttpResponse response = null;
+        JSONObject data = new JSONObject();
+        postData.setHeader("content-type", "application/json; charset=UTF-8");
+        InputStream myInfo = null;
+        String bInfo = null;
+        BooksTO books = null;
+
+        try {
+            data.put("userId", Integer.parseInt(userId));
+            postData.setEntity(new StringEntity(data.toString()));
+            response = conn.execute(postData);
+            myInfo = (response.getEntity().getContent());
+            Log.d("String", String.valueOf(myInfo));
+            if (myInfo != null) {
+                bInfo = decodeMyData(myInfo);
+                Log.d("data", bInfo);
+                sHistory = new BookTradeJSONParser().parseSoldHistoryInfo(bInfo);
+
+            } else {
+                //bInfo = "No Data";
+            }
+
+
+            System.out.print("********************" + bInfo);
+            //Log.d("Hello Data",bInfo);
+
+        } catch (Exception ex) {
+            Log.d("book Info Error", ex.getStackTrace().toString());
+            ex.printStackTrace();
+        }
+        return (List<BooksTO>) sHistory;
+    }
+
+    public List<BooksTO> getBoughtTransaction(String userId) {
+
+        List<BooksTO> bHistory = new ArrayList<BooksTO>();
+        HttpClient conn = new DefaultHttpClient();
+        HttpPost postData = new HttpPost(BookTradeConstants.BASE_REF_URL + "/buyer/fetchBoughtBooks");
+        HttpResponse response = null;
+        JSONObject data = new JSONObject();
+        postData.setHeader("content-type", "application/json; charset=UTF-8");
+        InputStream myInfo = null;
+        String bInfo = null;
+        BooksTO books = null;
+
+        try {
+            data.put("userId", Integer.parseInt(userId));
+            postData.setEntity(new StringEntity(data.toString()));
+            response = conn.execute(postData);
+            myInfo = (response.getEntity().getContent());
+            Log.d("String", String.valueOf(myInfo));
+            if (myInfo != null) {
+                bInfo = decodeMyData(myInfo);
+                Log.d("data", bInfo);
+                bHistory = new BookTradeJSONParser().parseBoughtHistoryInfo(bInfo);
+
+            } else {
+                //bInfo = "No Data";
+            }
+
+
+            System.out.print("********************" + bInfo);
+            //Log.d("Hello Data",bInfo);
+
+        } catch (Exception ex) {
+            Log.d("book Info Error", ex.getStackTrace().toString());
+            ex.printStackTrace();
+        }
+        return (List<BooksTO>) bHistory;
+    }
+
+    private static String decodeMyData(InputStream inputStream) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        String line = "";
+        String data = "";
+        while ((line = bufferedReader.readLine()) != null) {
+            data += line;
+            Log.d("Database", line);
+        }
+        inputStream.close();
+        return data;
+
+    }
+
 
 }

@@ -1,26 +1,24 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:id="@+id/scrollojt"
-    android:fillViewport="true" >
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <RelativeLayout
+    <Button
+        android:id="@+id/sold_button"
+        style="?android:textAppearanceSmall"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:text="Books Sold"
+        android:textStyle="bold" />
 
-        <ListView
-            android:id="@+id/boughtBooks"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#f00" >
-        </ListView>
+    <Button
+        android:id="@+id/bought_button"
+        style="?android:textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Books Bought"
+        android:textStyle="bold" />
 
-        <ListView
-            android:id="@+id/sellBooks"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/boughtBooks"
-            android:background="#0f0" >
-        </ListView>
-    </RelativeLayout>
-</ScrollView>
+</LinearLayout>

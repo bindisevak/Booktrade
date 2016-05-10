@@ -209,16 +209,16 @@ public class LandingPage extends AppCompatActivity
             Home fragment = new Home();
             android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.content_frame, fragment);
-            transaction.addToBackStack(null);
+            //transaction.addToBackStack(null);
             transaction.commit();
 
 
             // Handle the camera action
         } else if (id == R.id.nav_payment) {
-            Bundle b = new Bundle(  );
+            Bundle b = new Bundle();
             GetCredits rAction = new GetCredits();
             try {
-                currentCredits = rAction.execute(""+userInfo.getUserId()).get();
+                currentCredits = rAction.execute("" + userInfo.getUserId()).get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
@@ -233,15 +233,14 @@ public class LandingPage extends AppCompatActivity
 //            } catch (ExecutionException e) {
 //                e.printStackTrace();
 //            }
-            b.putString( "credits", currentCredits );
+            b.putString("credits", currentCredits);
             Payment fragment = new Payment();
-            b.putString( "userid", ""+userInfo.getUserId() );
-            fragment.setArguments( b );
+            b.putString("userid", "" + userInfo.getUserId());
+            fragment.setArguments(b);
             android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.content_frame, fragment);
             transaction.addToBackStack(null);
             transaction.commit();
-
 
         } else if (id == R.id.nav_history) {
             History fragment = new History();
@@ -250,7 +249,6 @@ public class LandingPage extends AppCompatActivity
             transaction.addToBackStack(null);
             transaction.commit();
 
-
         } else if (id == R.id.nav_about) {
             About fragment = new About();
             android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -258,16 +256,16 @@ public class LandingPage extends AppCompatActivity
             transaction.addToBackStack(null);
             transaction.commit();
 
-
-        } else if (id == R.id.nav_setting) {
-            Home fragment = new Home();
-            android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.content_frame, fragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
-
-
         }
+//        } else if (id == R.id.nav_setting) {
+//            Home fragment = new Home();
+//            android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//            transaction.replace(R.id.content_frame, fragment);
+//            transaction.addToBackStack(null);
+//            transaction.commit();
+//
+//
+//        }
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

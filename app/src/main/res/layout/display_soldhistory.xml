@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="30dp"
+        android:orientation="horizontal">
+
+
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:id="@+id/book_imageHistory"
+            android:layout_gravity="center" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Name: " />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/book_nameHistory" />
+                //android:layout_toRightOf="@+id/book_image"
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Price: " />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:id="@+id/book_priceHistory" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Author: " />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:id="@+id/book_authorHistory" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="2dp"
+                android:layout_height="2dp"
+                android:id="@+id/book_categoryHistory"
+                android:visibility="invisible" />
+
+            <TextView
+                android:layout_width="2dp"
+                android:layout_height="2dp"
+                android:id="@+id/book_editionHistory"
+                android:visibility="invisible" />
+
+            <TextView
+                android:layout_width="2dp"
+                android:layout_height="2dp"
+                android:id="@+id/book_pickUpShipHistory"
+                android:visibility="invisible" />
+
+            <TextView
+                android:layout_width="2dp"
+                android:layout_height="2dp"
+                android:id="@+id/book_idHistory"
+                android:visibility="invisible" />
+
+            <TextView
+                android:layout_width="2dp"
+                android:layout_height="2dp"
+                android:id="@+id/book_userIdHistory"
+                android:visibility="invisible" />
+
+            <TextView
+                android:layout_width="2dp"
+                android:layout_height="2dp"
+                android:id="@+id/book_userContactHistory"
+                android:visibility="invisible" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>
+
+
+
+
+

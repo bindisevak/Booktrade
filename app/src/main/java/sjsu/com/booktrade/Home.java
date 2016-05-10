@@ -124,7 +124,7 @@ public class Home extends Fragment {
 //        email.setText(userInfo.getEmailId());
 
         if (!canAccessLocation()) {
-            //requestPermissions(INITIAL_PERMS, INITIAL_REQUEST);
+            requestPermissions(INITIAL_PERMS, INITIAL_REQUEST);
             BooksAction bAction = new BooksAction(this);
             bAction.execute();
         }
@@ -132,8 +132,8 @@ public class Home extends Fragment {
             GPSTracker gps = new GPSTracker(getContext());
             presentLocation = gps.getLocation();
             if (gps.canGetLocation()) {
-                double latitude = 37.3551720;
-                double longitude = -121.8917830;
+                double latitude = gps.getLatitude();
+                double longitude = gps.getLongitude();
                 Log.d("Lat",latitude+"");
                 Log.d("Lang",longitude+"");
                 Toast.makeText(getContext(), "Your location is " + latitude + "Longitude is " + longitude, Toast.LENGTH_LONG).show();
@@ -173,11 +173,11 @@ public class Home extends Fragment {
 
     BooksTO bInfo;
 
-    public void bindView(){
-        BooksAction bAction = new BooksAction(this);
-        bAction.execute();
-
-    }
+//    public void bindView(){
+//        BooksAction bAction = new BooksAction(this);
+//        bAction.execute();
+//
+//    }
 
 
 
