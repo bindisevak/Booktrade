@@ -619,4 +619,42 @@ public class BookTradeHttpConnection {
         }
         return (List<BooksTO>) bHistory;
     }
+
+    public List<BooksTO> getRecommendedBooks(String userId) {
+
+        List<BooksTO> bRecommended = new ArrayList<BooksTO>();
+        HttpClient conn = new DefaultHttpClient();
+        HttpPost postData = new HttpPost(BookTradeConstants.BASE_REF_URL + "/recommendation/getRecommendedBooks");
+        HttpResponse response = null;
+        JSONObject data = new JSONObject();
+        postData.setHeader("content-type", "application/json; charset=UTF-8");
+        InputStream myInfo = null;
+        String bInfo = null;
+        BooksTO books = null;
+
+        try {
+            data.put("userId", Integer.parseInt(userId));
+            postData.setEntity(new StringEntity(data.toString()));
+            response = conn.execute(postData);
+            myInfo = (response.getEntity().getContent());
+            Log.d("String", String.valueOf(myInfo));
+            if (myInfo != null) {
+                bInfo = decodeMyData(myInfo);
+                Log.d("data", bInfo);
+                bRecommended = new BookTradeJSONParser().parseBooksInfo(bInfo);
+
+            } else {
+                //bInfo = "No Data";
+            }
+
+
+            System.out.print("********************" + bInfo);
+            //Log.d("Hello Data",bInfo);
+
+        } catch (Exception ex) {
+            Log.d("book Info Error", ex.getStackTrace().toString());
+            ex.printStackTrace();
+        }
+        return (List<BooksTO>) bRecommended;
+    }
 }
