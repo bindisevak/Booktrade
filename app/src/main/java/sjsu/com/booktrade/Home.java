@@ -125,8 +125,8 @@ public class Home extends Fragment {
 
         if (!canAccessLocation()) {
             requestPermissions(INITIAL_PERMS, INITIAL_REQUEST);
-            BooksAction bAction = new BooksAction(this);
-            bAction.execute();
+//            BooksAction bAction = new BooksAction(this);
+//            bAction.execute();
         }
         else{
             GPSTracker gps = new GPSTracker(getContext());

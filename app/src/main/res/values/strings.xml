@@ -14,13 +14,13 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_registration">RegistrationActivity</string>
-    <string name="title_activity_landing_page">LandingPageActivity</string>
-    <string name="title_activity_book_input">BookInputActivity</string>
-    <string name="title_activity_trade_request">TradeRequestActivity</string>
-    <string name="title_activity_track_package">TrackPackageActivity</string>
-    <string name="title_activity_checkout">CheckoutActivity</string>
-    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_registration">BookTrade</string>
+    <string name="title_activity_landing_page">BookTrade</string>
+    <string name="title_activity_book_input">BookTrade</string>
+    <string name="title_activity_trade_request">BookTrade</string>
+    <string name="title_activity_track_package">BookTrade</string>
+    <string name="title_activity_checkout">BookTrade</string>
+    <string name="title_activity_search">BookTrade</string>
 
     <!-- Register Activity -->
     <string name="txt_first_name">First Name</string>
@@ -105,7 +105,7 @@
 
     <string name="pick_time">Open Time Picker</string>
 
-    <string name="title_activity_book_details">BookDetails</string>
+    <string name="title_activity_book_details">BookTrade</string>
 
     <!-- Strings related to Settings -->
 
@@ -170,5 +170,5 @@
     <string name="search_label1">search_label1</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

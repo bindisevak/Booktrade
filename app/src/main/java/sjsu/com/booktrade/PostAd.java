@@ -43,7 +43,7 @@ public class PostAd extends Fragment {
         super.onCreate(savedInstanceState);
         myView = inflater.inflate(R.layout.postad, container, false);
         ButterKnife.inject(this,myView);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Post Ad");
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("BookTrade");
         btnScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
