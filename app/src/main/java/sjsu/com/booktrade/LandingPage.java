@@ -267,16 +267,15 @@ public class LandingPage extends AppCompatActivity
             transaction.addToBackStack(null);
             transaction.commit();
 
+        } else if (id == R.id.nav_recommendation) {
+            Recommendation fragment = new Recommendation();
+            android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.content_frame, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+
+
         }
-//        } else if (id == R.id.nav_setting) {
-//            Home fragment = new Home();
-//            android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//            transaction.replace(R.id.content_frame, fragment);
-//            transaction.addToBackStack(null);
-//            transaction.commit();
-//
-//
-//        }
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
