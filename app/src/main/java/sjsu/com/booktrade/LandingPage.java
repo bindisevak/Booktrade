@@ -2,6 +2,7 @@
 package sjsu.com.booktrade;
 
 import android.app.SearchManager;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.Manifest;
@@ -34,6 +35,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -48,6 +51,7 @@ public class LandingPage extends AppCompatActivity
     private Location presentLocation;
 
 
+
     //GPS RELATED VARS
     private static final int INITIAL_REQUEST = 1337;
     private static final String[] INITIAL_PERMS = {
@@ -56,6 +60,7 @@ public class LandingPage extends AppCompatActivity
     private static final String[] LOCATION_PERMS = {
             Manifest.permission.ACCESS_FINE_LOCATION
     };
+    public static final String MyPREFERENCES = "Preference";
 
     ArrayList<BooksTO> bookList;
     BooksAdapter adapter;
@@ -82,6 +87,12 @@ public class LandingPage extends AppCompatActivity
         userInfo=(UserTO) intent.getSerializableExtra("UserInfo");
         Log.d("Email",userInfo.getEmailId());
         UserTO userInfo = (UserTO) intent.getSerializableExtra("UserInfo");
+        SharedPreferences mPrefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor prefsEditor = mPrefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(userInfo); // myObject - instance of MyObject
+        prefsEditor.putString("loggedInUser", json);
+        prefsEditor.commit();
         //Log.d("Email", userInfo.getEmailId());
         //String lName = intent.getStringExtra("lastName");
 
@@ -209,16 +220,16 @@ public class LandingPage extends AppCompatActivity
             Home fragment = new Home();
             android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.content_frame, fragment);
-            transaction.addToBackStack(null);
+            //transaction.addToBackStack(null);
             transaction.commit();
 
 
             // Handle the camera action
         } else if (id == R.id.nav_payment) {
-            Bundle b = new Bundle(  );
+            Bundle b = new Bundle();
             GetCredits rAction = new GetCredits();
             try {
-                currentCredits = rAction.execute(""+userInfo.getUserId()).get();
+                currentCredits = rAction.execute("" + userInfo.getUserId()).get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
@@ -233,15 +244,14 @@ public class LandingPage extends AppCompatActivity
 //            } catch (ExecutionException e) {
 //                e.printStackTrace();
 //            }
-            b.putString( "credits", currentCredits );
+            b.putString("credits", currentCredits);
             Payment fragment = new Payment();
-            b.putString( "userid", ""+userInfo.getUserId() );
-            fragment.setArguments( b );
+            b.putString("userid", "" + userInfo.getUserId());
+            fragment.setArguments(b);
             android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.content_frame, fragment);
             transaction.addToBackStack(null);
             transaction.commit();
-
 
         } else if (id == R.id.nav_history) {
             History fragment = new History();
@@ -250,7 +260,6 @@ public class LandingPage extends AppCompatActivity
             transaction.addToBackStack(null);
             transaction.commit();
 
-
         } else if (id == R.id.nav_about) {
             About fragment = new About();
             android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -258,16 +267,16 @@ public class LandingPage extends AppCompatActivity
             transaction.addToBackStack(null);
             transaction.commit();
 
-
-        } else if (id == R.id.nav_setting) {
-            Home fragment = new Home();
-            android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.content_frame, fragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
-
-
         }
+//        } else if (id == R.id.nav_setting) {
+//            Home fragment = new Home();
+//            android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//            transaction.replace(R.id.content_frame, fragment);
+//            transaction.addToBackStack(null);
+//            transaction.commit();
+//
+//
+//        }
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -289,7 +298,6 @@ public class LandingPage extends AppCompatActivity
         @Override
         protected String doInBackground(String... params) {
             BookTradeHttpConnection conn = new BookTradeHttpConnection();
-            Log.d( "", "MAIN HOON DON" );
             currentCredits = conn.getCredits(params[0]);
             return currentCredits;
         }

@@ -2,8 +2,10 @@ package sjsu.com.booktrade;
 
 
 import android.app.ActionBar;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -16,8 +18,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import sjsu.com.booktrade.beans.UserTO;
+import sjsu.com.booktrade.util.BookTradeHttpConnection;
 
 public class BookDetails extends AppCompatActivity {
 
@@ -58,7 +62,7 @@ Button btn_buy;
                 String category = in.getStringExtra("category");
                 final String pickShip = in.getStringExtra("pickShip");
                 final String sellerId = in.getStringExtra("sellerId");
-                final String userId = in.getStringExtra("userId");
+                final int userId = in.getIntExtra("userId",0);
                 final String contactNumberStr = in.getStringExtra("contactNumber");
 
 
@@ -76,6 +80,9 @@ Button btn_buy;
         Log.d("Seller Id::::::: ",sellerId);
                 bookUserId.setText(sellerId);
                 contactNumber.setText(contactNumberStr);
+
+        if(category != null && category.length()>0)
+            saveBrowsingHistory(String.valueOf(userId), bookId, category);
 
         btn_buy.setOnClickListener(new View.OnClickListener() {
 
@@ -98,6 +105,35 @@ Button btn_buy;
 
             }
         });
+
+
+    }
+
+    private void saveBrowsingHistory(String userId, String bookId, String category) {
+        SaveBrowsingHistoryAction action = new SaveBrowsingHistoryAction(this);
+        action.execute(bookId, userId, category);
+
+    }
+
+    private class SaveBrowsingHistoryAction extends AsyncTask<String,String,String> {
+        String bookId = null;
+        Context context;
+
+        private SaveBrowsingHistoryAction(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            BookTradeHttpConnection conn = new BookTradeHttpConnection();
+            conn.saveInBrowsingHistory(params[0],params[1], params[2]);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
 
 
     }

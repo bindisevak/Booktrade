@@ -2,6 +2,7 @@ package sjsu.com.booktrade;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,8 +17,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import sjsu.com.booktrade.beans.UserTO;
 import sjsu.com.booktrade.util.BookTradeHttpConnection;
+
+import static android.content.Context.*;
 
 /**
  * Created by nkotasth on 5/4/16.
@@ -38,7 +43,6 @@ public class BuyBook extends AppCompatActivity {
     EditText postalCode;
 
     UserTO userInfo;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,22 +59,22 @@ public class BuyBook extends AppCompatActivity {
         postalCode = (EditText)findViewById(R.id.input_zip) ;
         btn_checkout_view = (Button)findViewById(R.id.btn_checkout) ;
 
-        userInfo=(UserTO) getIntent().getSerializableExtra("UserInfo");
+        Gson gson = new Gson();
+        SharedPreferences mPrefs = getSharedPreferences(LandingPage.MyPREFERENCES, MODE_PRIVATE);
+        String json = mPrefs.getString("loggedInUser", "");
+        userInfo = gson.fromJson(json, UserTO.class);
 
         Intent in =getIntent();
-        //Boolean pickup = in.getBooleanExtra("pickup",true);
 
         final Boolean pickup = in.getBooleanExtra("pickup",true);
         final String sellerId = in.getStringExtra("sellerIdFromBookDetails");
         final String bookId = in.getStringExtra("bookIdFromBookDetails");
         final String price = in.getStringExtra("priceFromBookDetails");
-        final String userId = in.getStringExtra("userId");
+        final String userId = String.valueOf(in.getIntExtra("userId",0));
         if(pickup == true) {
             pickupLayout.setVisibility(View.VISIBLE);
             delivery.setVisibility(View.GONE);
-
         }
-
         else {
             pickupLayout.setVisibility(View.GONE);
             pickupLayout.setVisibility(View.GONE);
@@ -79,10 +83,13 @@ public class BuyBook extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-               buyBook(pickup, sellerId, bookId, price, userId);
+                if(userInfo.getCredits() < Double.valueOf(price)){
+                    Toast.makeText(getApplicationContext(), "You do not have sufficient credits to make this purchase. Buy credits and try again.", Toast.LENGTH_LONG).show();
+                }else {
+                    buyBook(pickup, sellerId, bookId, price, userId);
+                }
             }
         });
-
     }
 
     String message = null;
@@ -125,7 +132,7 @@ public class BuyBook extends AppCompatActivity {
             BookTradeHttpConnection conn = new BookTradeHttpConnection();
             bookId = conn.buyBook(params[0],params[1],params[2],params[3],params[4],params[5],params[6],params[7],params[8],params[9],params[10],params[11]);
             if(params[0].equalsIgnoreCase("pickUp")){
-                message = " You need to Pick up the book on "+params[6] +" at "+params[7]+" "+params[3]+" credits have been deducted from your account.For any changes contact seller on "+getIntent().getStringExtra("contactNumber");
+                message = " You need to Pick up the book on "+params[6] +" at "+params[7]+". "+params[3]+" credits have been deducted from your account.For any changes contact seller on "+userInfo.getContactNumber();
             }else{
                 message = "Book will be shipped and delivered within a week at the given address!!";
             }
@@ -136,14 +143,11 @@ public class BuyBook extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Log.d("User","-----------------------------------------"+userInfo.getEmailId());
             if(bookId!=null) {
-
-                Log.d("User","-----------------------------------------"+userInfo.getEmailId());
                 Intent mainAct = new Intent(context, LandingPage.class);
                 mainAct.putExtra("UserInfo",userInfo);
                 startActivity(mainAct);
-                Toast.makeText(getApplicationContext(), "Sucessfully placed the order!! "+message, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Successfully placed the order!! "+message, Toast.LENGTH_LONG).show();
             }
             else
             {
