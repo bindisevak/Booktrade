@@ -324,7 +324,7 @@ public class Home extends Fragment {
                     in.putExtra("contactNumber", contactNumber);
                     Intent intent = getActivity().getIntent();
                     UserTO userInfo=(UserTO) intent.getSerializableExtra("UserInfo");
-                    String userId = String.valueOf(userInfo.getUserId());
+                    int userId = userInfo.getUserId();
                     in.putExtra("userId", userId);
 
                     startActivity(in);
