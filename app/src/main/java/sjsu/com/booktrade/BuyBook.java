@@ -132,7 +132,7 @@ public class BuyBook extends AppCompatActivity {
             BookTradeHttpConnection conn = new BookTradeHttpConnection();
             bookId = conn.buyBook(params[0],params[1],params[2],params[3],params[4],params[5],params[6],params[7],params[8],params[9],params[10],params[11]);
             if(params[0].equalsIgnoreCase("pickUp")){
-                message = " You need to Pick up the book on "+params[6] +" at "+params[6]+". "+params[3]+" credits have been deducted from your account.For any changes contact seller on "+userInfo.getContactNumber();
+                message = " You need to Pick up the book on "+params[5] +" at "+params[6]+". "+params[3]+" credits have been deducted from your account.For any changes contact seller on "+userInfo.getContactNumber();
             }else{
                 message = "Book will be shipped and delivered within a week at the given address!!";
             }
